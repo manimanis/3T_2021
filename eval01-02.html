@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluation n°1</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/default.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        caption {
+            caption-side: top;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <aside>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#aside_navbar"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span> Menu
+            </button>
+            <div class="collapse navbar-collapse" id="aside_navbar"></div>
+        </nav>
+    </aside>
+
+    <main class="container my-3">
+        <h1>DAB</h1>
+
+        <article>
+            <h2>DAB</h2>
+
+            <section>
+                <h3>Enoncé</h3>
+
+                <p>Devant le <abbr title="Distributeur Automatique de Billets">DAB</abbr> d'une banque se dresse une
+                    foule de <b>n</b> clients, 1 &le; n &le; 15, qui désirent faire des retraits d'argent.</p>
+
+                <p>Sachant que le distributeur dispose d'un montant initial, <code>mid &ge; 0</code>. Et qu'il :</p>
+                <ul>
+                    <li>N'autorise pas un retrait au dessus d'un montant donné, <code>mma &ge; 10</code>.</li>
+                    <li>N'autorise que le retrait d'un montant multiple de 10</li>
+                    <li>N'autorise pas le retrait d'un montant supérieur au montant restant dans le distributeur,
+                        <code>mr</code>.
+                    </li>
+                </ul>
+
+                <p>On demande de compléter l'algorithme, puis d'écrire le programme Python qui étant donné les montants
+                    que les clients veulent retirer, affiche les numéros de transactions invalides, ainsi que le montant
+                    restant <code>mr</code>, après que tous les clients aient terminé leurs transactions.</p>
+
+                <h4>Exemple</h4>
+
+                <pre><code class="hljs nohighlight">Montant initial distributeur (mid &ge; 0) ? 600
+Montant maximal autorisé (mma &ge; 10) ? 250
+Nombre de clients (1 &le; n &le; 15) ? 8
+Montant retrait client 1 ? 160
+Montant retrait client 2 ? 55
+Montant retrait client 3 ? 260
+Montant retrait client 4 ? 60
+Montant retrait client 5 ? 240
+Montant retrait client 6 ? 150
+Montant retrait client 7 ? 80
+Montant retrait client 8 ? 100
+Les transactions invalides sont numéro : 
+- 2 => 55 DT
+- 3 => 260 DT
+- 6 => 150 DT
+- 8 => 100 DT
+Le montant restant = 60 DT</code></pre>
+
+                <h4>Explication</h4>
+
+                <p>Le retrait du client n°2 est invalide car 55DT n'est pas un montant multiple de 10 DT.</p>
+                <p>Le retrait du client n°3, 260 DT, dépasse le montant maximal autorisé pour chaque transaction,
+                    <code>mma = 250DT</code>.</p>
+                <p>Le retrait du client n°6, 150 DT, dépasse le montant restant, <code>mr = 140 DT</code>, après la
+                    5<sup>ème</sup> transaction.</p>
+                <p>Le retrait du client n°6, 100 DT, dépasse le montant restant, <code>mr = 60 DT</code>, après la
+                    7<sup>ème</sup> transaction.</p>
+            </section>
+
+            <section>
+                <h3>Algorithme</h3>
+
+                <pre><code class="language-algorithm">Algorithme DAB
+Début
+  // 1. Saisie du montant initial
+  Répéter
+    Ecrire("Montant initial distributeur (mid &ge; 10) ? ")
+    Lire(mid)
+  Jusqu'à (mid &ge; 0)
+  // 2. Saisie du montant maximal autorisé
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  // 3. Saisie du nombre de clients
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  // 4. Saisie des montants à retirer
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  // 5. Trouver les transactions invalides
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  // 6. Affichage du montant restant
+  .........................................................
+Fin</code></pre>
+
+<table class="w-100">
+    <tr>
+        <td class="w-50">
+            <table class="table border-dark table-bordered table-sm">
+                <tr>
+                    <th>TDNT</th>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+        </td>
+        <td>
+            <table class="table border-dark table-bordered table-sm">
+                <tr>
+                    <th colspan="2">TDO</th>
+                </tr>
+                <tr>
+                    <th>Objet</th>
+                    <th>Type</th>
+                </tr>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+            </section>
+        </article>
+    </main>
+
+    <footer class="d-print-none bg-dark text-white p-2">
+        <div class="text-center">Page créée avec ♥ par Mohamed Anis MANI</div>
+        <div class="text-center small">Année scolaire : 2020/2021</div>
+    </footer>
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/highlight.pack.js"></script>
+    <script src="assets/js/hljs.algorithm.js"></script>
+    <script src="assets/js/vue.min.js"></script>
+    <script src="assets/js/pages.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script>
+</body>
+
+</html>

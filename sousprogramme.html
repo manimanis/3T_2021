@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sous-Programmes</title>
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/default.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/sousprogramme.css">
+</head>
+
+<body>
+  <aside>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#aside_navbar"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span> Menu
+      </button>
+      <div class="collapse navbar-collapse" id="aside_navbar"></div>
+    </nav>
+  </aside>
+
+  <main class="container my-3">
+    <h1>Jeu de rôles</h1>
+
+    <article>
+      <h2>Jeu de rôles</h2>
+
+      <section>
+        <h3>Principe</h3>
+
+        <p>On veut écrire un jeu de rôles, très simplifié, en mode texte. Le jeu se déroule dans un château et a pour
+          but de retrouver le trésor du château caché dans l'une de ses chambres.</p>
+
+        <p>On supposera que la partie à visiter comporte uniquement quatre pièces, et que dans chacune de ces pièces il
+          y a, toujours, exactement trois portes fermées.</p>
+
+        <p>La figure suivante donne la carte simplifiée du château :</p>
+
+        <div>
+          <figure>
+            <img src="assets/images/castle-map.png" alt="Carte du château" class="h7cm">
+            <figcaption>Carte du château</figcaption>
+          </figure>
+        </div>
+
+        <p>Au début du jeu, le joueur se trouve dans la salle commune. La porte derrière lui permet de quitter
+          le château et de perdre le jeu. La porte à sa droite donne sur la salle de l'ours et celle à sa gauche donne
+          sur la salle du monstre.</p>
+
+        <p>Si le joueur s'aventure dans la salle de l'ours, ayant elle aussi trois portes, il y trouve un ours attaché
+          près de la porte droite afin de la garder contre les intrus. La porte derrière le joueur lui permet de
+          retourner à la salle commune, tandis que la porte à sa gauche débouche sur un long tunnel sombre et noir qui
+          finit, aussi, par mystère, dans la salle commune.</p>
+
+        <p>Par contre, si le joueur choisit, par hasard, la salle du monstre, il y trouve un petit monstre maléfique. Ce
+          dernier, voulant terrifier le joueur, ouvre son large museau qui montre des dents pointues, tranchantes et
+          à partir du quel s'échappe une odeur infecte. La porte derrière le joueur, comme d'habitude, lui permet de
+          rebrousser chemin vers la salle commune. La porte à sa gauche est fermée sur la salle des terreurs sanctuaires
+          des fantômes et des monstres prêts à dévorer celui qui ose s'y aventurer. Et enfin, pour accéder à la porte
+          droite, il faudra battre le monstre, chose aisée pour celui qui possède l'épée magique. En ouvrant la porte
+          droite le joueur se retrouve, finalement, dans la salle de diamond.</p>
+
+        <p>Une fois dans la salle de diamond, le joueur y découvre, en face de lui, à sa gauche, un gros diamond et, à
+          sa droite, une caisse bien fermée avec un gros cadena. Si le joueur se contente du diamond et quitte les
+          lieux aussi rapidement qu'il y est entré, il est déclaré gagnant. Par contre, si poussé par la cupidité, il
+          choisit de forcer la caisse fermée, en imaginant qu'elle contienne plus de diamond et d'or, il péri empoisonné
+          et mordu par les vipères et les scorpions qui y sont cachés.</p>
+      </section>
+
+      <section class="d-print-none">
+        <h3 class="p-break">Démonstration</h3>
+
+        <p>Voici une implémentation interactive, à tester, afin de comprendre le fonctionnement du jeu.</p>
+
+        <div id="roles-game">
+          <p class="h2 text-center">⚞ Diamond Hunter ⚟</p>
+          <div v-if="message != ''" class="game-over">
+            <div class="box">
+              <p class="h3 text-center">Game Over</p>
+              <p>{{message}}</p>
+              <p class="text-center">
+                <button class="btn btn-dark" v-on:click="reset()">Restart the game</button>
+              </p>
+            </div>
+          </div>
+
+          <div v-if="room == 'start'" class="room lobby">
+            <p class="h3 text-center">♬ Lobby ♬</p>
+            <img src="assets/images/room-doors.jpg" alt="">
+            <div class="bullet">
+              <p>You entered the castle, you are in the lobby.</p>
+              <p>You see two doors in front of you.</p>
+              <p>Which door do you want to select?</p>
+              <p>
+                <button class="btn btn-dark" v-on:click="goto('monster')">Left door</button>
+                <button class="btn btn-outline-dark"
+                  v-on:click="game_over('You choose to escape you are a coward.')">Escape</button>
+                <button class="btn btn-dark" v-on:click="goto('bear')">Right door</button>
+              </p>
+            </div>
+          </div>
+
+          <div v-if="room == 'bear'" class="room bear">
+            <p class="h3 text-center">♬ Bear Room ♬</p>
+            <img src="assets/images/room-bear.jpg" alt="">
+            <div class="bullet">
+              <p>You're in the Bear room.</p>
+              <p>You see a huge bear in front of you.</p>
+              <p>What you want to do?</p>
+              <p>
+                <button class="btn btn-dark" v-on:click="goto('start')">Open left door</button>
+                <button class="btn btn-outline-dark" v-on:click="goto('start')">Escape</button>
+                <button class="btn btn-dark" v-on:click="game_over('You fight the bear and you died!')">Fight the
+                  bear</button>
+              </p>
+            </div>
+          </div>
+
+          <div v-if="room == 'monster'" class="room monster">
+            <p class="h3 text-center">♬ Monster Room ♬</p>
+            <img src="assets/images/room-monster.jpg" alt="">
+            <div class="bullet">
+              <p>You're in the Monster room.</p>
+              <p>You see a tiny monster in front of you.</p>
+              <p>What you want to do?</p>
+              <p>
+                <button class="btn btn-dark"
+                  v-on:click="game_over('You escaped the monster, but you died of terror in the next room!')">Open left
+                  door</button>
+                <button class="btn btn-outline-dark" v-on:click="goto('start')">Escape</button>
+                <button class="btn btn-dark" v-on:click="goto('diamond')">Beat the monster</button>
+              </p>
+            </div>
+          </div>
+
+          <div v-if="room == 'diamond'" class="room diamond">
+            <p class="h3 text-center">♬ Diamond Room ♬</p>
+            <img src="assets/images/room-diamond.jpg" alt="">
+            <div class="bullet">
+              <p>You're in the Diamond room.</p>
+              <p>You see a diamond in your left.</p>
+              <p>And a closed chest in your right.</p>
+              <p>What you want to do?</p>
+              <p>
+                <button class="btn btn-dark" v-on:click="goto('winner')">Take the diamond</button>
+                <button class="btn btn-outline-dark" v-on:click="goto('monster')">Escape</button>
+                <button class="btn btn-dark"
+                  v-on:click="game_over('The chest is full of vipers and scorpions! You are killed!')">Open the
+                  chest</button>
+              </p>
+            </div>
+          </div>
+
+          <div v-if="room == 'winner'">
+            <p class="h3 text-center">♪ Game end ♪</p>
+            <img src="assets/images/Winner.jpg" alt="">
+            <div class="bullet">
+              <p>Good job you win the game!.</p>
+              <p>What you want to do?</p>
+              <p class="text-center">
+                <button class="btn btn-outline-dark" v-on:click="reset()">Restart the game</button>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h3>Carte du jeu</h3>
+
+        <p>Cliquer sur la carte pour l'agrandir.</p>
+
+        <div>
+          <figure>
+            <a href="assets/images/game_map.png" target="_blank" rel="noopener noreferrer">
+              <img src="assets/images/game_map_thumb.png" alt="Carte du jeu">
+            </a>
+            <figcaption>Carte du jeu</figcaption>
+          </figure>
+        </div>
+      </section>
+    </article>
+
+    <article class="p-break">
+      <h2>Sous-programmes</h2>
+      <section>
+        <h3>Décomposition</h3>
+
+        <p>Bien que le problème semble, à premier abord, assez simple, on sera vite surpris par le fait qu'il n'est pas
+          résoluble à l'aide des structures de contrôle de flux déjà étudiées (structures conditionnelles et structures
+          itératives).</p>
+
+        <p>En effet, le joueur peut, dans ce jeu, se déplacer librement d'une pièce à une autre. Il sort d'une pièce
+          pour entrer dans une seconde. Il peut aussi retourner à la pièce où il était déjà.</p>
+
+        <p>On remarque que chaque pièce, dans le jeu, est indépendante des autres et constitue, à elle seule, un
+          <strong>sous-problème</strong>.
+        </p>
+
+        <p>Ainsi, en décomposant notre problème principal en des <strong>sous-problèmes</strong> plus faciles à
+          résoudre, on arrive à les traiter indépendamment les uns des autres. Chacun de ces
+          <strong>sous-problèmes</strong> constitue dans le programme principal un <strong>sous-programme</strong>.
+        </p>
+
+        <p>La figure suivante essaye de décomposer le jeu &laquo; Diamond Hunter &raquo; en
+          <strong>sous-programmes</strong>.
+        </p>
+
+        <div>
+          <figure>
+            <img src="assets/images/decomposition.png" alt="Décomposition" class="h7cm">
+            <figcaption>Décomposition en sous-programmes</figcaption>
+          </figure>
+        </div>
+
+        <p>Dans cette figure, les sous-programmes ont été identifié par deux couleurs :</p>
+
+        <ul>
+          <li>La couleur verte a été utilisée pour identifier <strong>les fonctions</strong>.</li>
+          <li>La couleur rouge a été utilisée pour identifier <strong>les procédures</strong>.</li>
+        </ul>
+
+        <p>Nous donnerons plus de détails sur <strong>les procédures</strong> et <strong>les fonctions</strong> dans la
+          section suivante.</p>
+      </section>
+
+      <section>
+        <h3>Les fonctions</h3>
+
+        <h4>Définition</h4>
+
+        <p>Une fonction est un sous-programme qui renvoie <u>un seul résultat à son appelant</u>. Une fonction peut
+          avoir <strong>zéro ou plusieurs paramètres</strong>. Dans ce cas, le résultat qu'elle renvoie dépend d'eux.
+        </p>
+
+        <p>Lorsqu'on écrit en Python :</p>
+        <div>
+          <pre><code class="language-python">n = int(input("Donner un nombre [1, 10] ? "))</code></pre>
+        </div>
+        <p>Cet appel est équivalent à écrire :</p>
+        <div>
+          <pre><code class="language-python">ch = input("Donner un nombre [1, 10] ? ")
+n = int(ch)</code></pre>
+        </div>
+        <p>Dans le code précédent, nous avons fait appel à deux fonctions :</p>
+        <ul>
+          <li><code>ch = input("Donner un nombre [1, 10] ? ")</code> qui renvoie la chaîne de caractères tapée par
+            l'utilisateur, depuis le clavier. Cette dernière sera affectée à la variable <code>ch</code>.</li>
+          <li><code>n = int(ch)</code> qui convertit la chaîne <code>ch</code> en un nombre entier et renvoie le
+            résultat dans la variable <code>n</code></li>
+        </ul>
+
+        <h4>Exemples</h4>
+
+        <h5>Fonction sans paramètres</h5>
+
+        <p>Ecrire une fonction qui simule le lancement d'un dé à 6 faces.</p>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <pre><code class="language-algorithm">fonction de():entier
+Début
+  Retourner aléa(1, 6)
+Fin</code></pre>
+          </div>
+          <div class="col-sm-6">
+            <pre><code class="language-python">def de():
+  from random import randint
+  return randint(1, 6)
+ </code></pre>
+          </div>
+        </div>
+
+        <h5>Fonction avec un seul paramètre</h5>
+
+        <p>Ecrire une fonction qui calcule la somme de chiffres d'un nombre <code>n</code> passé en paramètre.</p>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <pre><code class="language-algorithm">fonction somme(n : entier):entier
+Début
+  s &larr; 0
+  Tantque n &gt; 0 Faire
+    s &larr; s + n mod 10
+    n &larr; n div 10
+  Fin Tantque
+  Retourner s
+Fin</code></pre>
+          </div>
+          <div class="col-sm-6">
+            <pre><code class="language-python">def somme(n):
+  # -
+  s = 0
+  while n > 0:
+    s = s + n % 10
+    n = n // 10
+    # -
+  return s
+ </code></pre>
+          </div>
+        </div>
+
+        <h5>Fonction avec deux paramètres</h5>
+
+        <p>Ecrire une fonction qui renvoie le <code>sup</code> des deux entiers, la valeur la plus grande.</p>
+
+        <p class="text-center"><img src="assets/images/sup-formule.png" alt="Formule sup(a, b)"></p>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <pre><code class="language-algorithm">fonction sup(a:entier,b:entier):entier
+Début
+  Retourner (a+b+abs(a-b)) div 2 
+Fin</code></pre>
+          </div>
+          <div class="col-sm-6">
+            <pre><code class="language-python">def sup(a, b):
+  # -
+  return (a+b+abs(a-b)) // 2 
+ </code></pre>
+          </div>
+
+          <h4>Activité</h4>
+
+          <p>Ré-écrire la fonction <code>sup(a, b)</code> d'une autre manière.</p>
+        </div>
+      </section>
+
+      <section class="p-break">
+        <h3>Les procédures</h3>
+
+        <h4>Définition</h4>
+
+        <p>Une procédure est un sous-programme qui <u>ne renvoie aucun résultat à son appelant</u>. Tout comme une
+          fonction, une procédure peut avoir <strong>zéro ou plusieurs paramètres</strong>.</p>
+
+        <p>Dans l'écriture Python suivante :</p>
+        <div>
+          <pre><code class="language-python">print()                    # Sauter une ligne vide
+print(a, "+", b, "=", a+b) # Afficher la somme de deux entiers a et b</code></pre>
+        </div>
+        <p>Pourquoi nous n'avons pas écrit <code>x = print()</code> ou <code>y = print(...)</code> ?</p>
+
+        <p><code>print()</code> n'a pas besoin de renvoyer une valeur, puisque son résultat est imprimée sur l'écran.
+          <code>print()</code> est considérée comme étant une procédure.
+        </p>
+
+        <h4>Exemples</h4>
+
+        <h5>Procédure sans paramètres</h5>
+
+        <p>Ecrire une procédure qui affiche les lettres de l'alphabet.</p>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <pre><code class="language-algorithm">Procédure afficher_alphabet()
+Début
+  Pour i de 0 à 25 Faire
+    car &larr; chr(65 + i)
+    Ecrire(car)
+  Fin Pour
+Fin</code></pre>
+          </div>
+          <div class="col-sm-6">
+            <pre><code class="language-python">def afficher_alphabet():
+  # -
+  for i in range(26):
+    car = chr(65 + i)
+    print(car, end='')
+  print()
+ </code></pre>
+          </div>
+        </div>
+
+        <h5>Procédure avec un seul paramètre</h5>
+
+        <p>Afficher un triangle rectangle, formé d'étoiles, de base <code>n</code>. <code>n</code> est un entier
+          positif.</p>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <pre><code class="language-algorithm">Procédure triangle_rect(n : entier)
+Début
+  Pour i de 1 à n Faire
+    Ecrire("*" * i)
+  Fin Pour
+Fin</code></pre>
+          </div>
+          <div class="col-sm-6">
+            <pre><code class="language-python">def triangle_rect(n):
+  # -
+  for i in range(1, n+1):
+    print("*" * i)
+
+ </code></pre>
+          </div>
+        </div>
+
+        <h5>Procédure avec plusieurs paramètres</h5>
+        <p>Ecrire une procédure qui affiche les éléments d'un tableau t dont l'indice est dans l'intervalle [a, b]. On
+          supposera que la taille du tableau: 0 &le; a &le; b &lt; len(t).</p>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <pre><code class="language-algorithm">Procédure afficher_tab(t:tab, a:entier, b:entier)
+Début
+  Pour i de a à b Faire
+    Ecrire(t[i])
+  Fin Pour
+Fin</code></pre>
+          </div>
+          <div class="col-sm-6">
+            <pre><code class="language-python">def afficher_tab(t, a, b):
+  # -
+  for i in range(a, b+1):
+    print(t[i], end=' ')
+  print()
+
+# Exemple d'appel
+t = [25, 17, 28, 3, 12, 16]
+afficher_tab(t, 2, 5)
+ </code></pre>
+          </div>
+        </div>
+      </section>
+    </article>
+
+    <article>
+      <h2>Implémentation</h2>
+
+      <section>
+        <h3>Procédure show_title()</h3>
+
+        <p>On veut écrire une procédure nommée <code>show_title</code> qui affiche le nom du jeu, ainsi que le nom de la
+          pièce -passé en paramètre-.</p>
+
+        <h4>Exemple</h4>
+
+        <p>En faisant l'appel suivant :</p>
+        <div>
+          <pre><code class="language-python">show_title("Lobby Room")</code></pre>
+        </div>
+
+        <p>On obtient l'affichage suivant :</p>
+        <div>
+          <pre><code class="nohighlight hljs">----------------------------------------------
+---      D I A M O N D   H U N T E R       ---
+---               Lobby Room               ---
+----------------------------------------------</code></pre>
+        </div>
+
+        <h4>Correction</h4>
+
+        <div>
+          <pre><code class="language-python">def show_title(room):
+    print()
+    print('-' * 46)
+    print('---      D I A M O N D   H U N T E R       ---')
+    print('---' + room.center(40) + '---')
+    print('-' * 46)
+    print()
+ </code></pre>
+        </div>
+
+        <div class="d-print-none">
+          <h4>Test</h4>
+
+          <p>Copier/Coller le programme suivant afin de tester son fonctionnement :</p>
+          <div>
+            <pre><code class="language-python"># Définition de la procédure
+def show_title(room):
+      print()
+      print('-' * 46)
+      print('---      D I A M O N D   H U N T E R       ---')
+      print('---' + room.center(40) + '---')
+      print('-' * 46)
+      print()
+
+# Appel de la procédure
+show_title("Lobby room")
+    </code></pre>
+          </div>
+
+          <h4>Travail demandé</h4>
+
+          <ol>
+            <li>Modifier l'appel de la procédure <code>show_title("Lobby room")</code> par un texte de votre choix.</li>
+            <li>Comment faire pour afficher les titres des autres chambres : "Bear room", "Monster room", "Diamond room" ?</li>
+            <li>Tester votre solution.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section>
+        <h3>Procédure game_over()</h3>
+
+        <p>En s'inspirant de la procédure <code>show_title()</code>, écrire la procédure
+          <code>game_over(message)</code>.
+        </p>
+
+        <p>Lorsqu'on appelle cette procédure de la façon suivante :</p>
+        <div>
+          <pre><code class="language-python">game_over("You lose, try again!")</code></pre>
+        </div>
+
+        <p>On obtient :</p>
+        <div>
+          <pre><code class="nohighlight hljs">=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+|                G A M E   O V E R                 |
+|               You lose, try again!               |
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</code></pre>
+        </div>
+      </section>
+
+      <section>
+        <h3>Procédure winner()</h3>
+
+        <p>Ecrire une nouvelle procédure appelée <code>winner()</code> qui affiche le message suivant lorsque le joueur
+          gagne la partie. Appeler la procédure <code>show_title()</code> déja implémentée précedemment.</p>
+
+        <div>
+          <pre><code class="nohighlight hljs">----------------------------------------------
+---      D I A M O N D   H U N T E R       ---
+---   Congratulations, you won the game!   ---
+----------------------------------------------</code></pre>
+        </div>
+      </section>
+
+      <section>
+        <h3 class="p-break">Fonction choose_option()</h3>
+
+        <p>Pour se déplacer d'une salle à une autre, le joueur doit ouvrir l'une des portes qui sont dans cette salle.
+          La fonction <code>choose_option()</code> propose au joueur de faire le choix entre trois propositions, dont
+          une est, toujours, de revenir sur ses pas.</p>
+
+        <p>La fonction <code>choose_option(question, choice1, choice2)</code> :</p>
+        <ul>
+          <li>Affiche une <code>question</code> au joueur.</li>
+          <li>Propose à l'utilisateur trois propositions :
+            <ol start="0">
+              <li>Return back</li>
+              <li><code>choice1</code></li>
+              <li><code>choice2</code></li>
+            </ol>
+          </li>
+          <li>Saisit la réponse de l'utilisateur qui devra correspondre à un des trois chiffres 0, 1 ou 2, chaque
+            chiffre représente un des trois choix déjà listés.</li>
+        </ul>
+
+        <p>L'appel de la fonction se fera, par exemple, de la manière suivante. La variable <code>choice</code>
+          contiendra le résultat de l'appel de la fonction, qui est, en effet, son choix parmi les propositions
+          affichées.</p>
+        <div>
+          <pre><code class="language-python">choice = choose_option("Which door do you want to select?",
+                       "Right door", 
+                       "Left door")</code></pre>
+        </div>
+
+        <p>La fonction provoque, par exemple, l'affichage suivant :</p>
+        <div>
+          <pre><code class="hljs nohighlight">Which door do you want to select?
+0: Return back
+1: Right door
+2: Left door
+Your choice ? </code></pre>
+        </div>
+
+        <p>Une implémentation possible de cette fonction pourra ressembler à :</p>
+
+        <div>
+          <pre><code class="language-python">def choose_option(question, choice1, choice2):
+    print(question)
+    print("0: Return back")
+    print(f"1: {choice1}")
+    print(f"2: {choice2}")
+
+    return input("Your choice ? ")
+</code></pre>
+        </div>
+
+        <h4>Travail demandé</h4>
+
+        <ol>
+          <li>Tester la fonction <code>choose_option()</code>.</li>
+          <li>Est-ce que cette fonction, dans son implémentation actuelle, accepte des entrées invalides, telles-qu'une
+            lettre alphabétique au lieu d'un chiffre ?</li>
+          <li>On remarque que la fonction accepte n'importe quelle valeur saisie par l'utilisateur. Essayez
+            de l'améliorer, en ajoutant le contrôle de saisie, pour qu'elle n'accepte que les trois chiffres
+            "0", "1" ou "2".</li>
+        </ol>
+      </section>
+
+      <section>
+        <h3 class="p-break">Procedure lobby_room()</h3>
+
+        <p>Au début du jeu, le joueur se trouve dans la salle commune.</p>
+
+        <div>
+          <figure>
+            <img src="assets/images/castle01.png" alt="Salle commune" class="h7cm">
+            <figcaption>Salle commune</figcaption>
+          </figure>
+        </div>
+
+        <p>On veut écrire une procédure <code>lobby_room()</code> qui implémente les interactions du joueur dans la
+          salle commune.</p>
+
+        <p>Cette procédure :</p>
+        <ol>
+          <li><strong>Etape 1 :</strong> Affiche un titre qui contient le nom du jeu ainsi que le nom de la pièce. On
+            appellera pour cela la
+            procédure <code>show_title()</code>, déjà implémentée.
+            <pre><code class="nohighlight hljs">----------------------------------------------
+---      D I A M O N D   H U N T E R       ---
+---               Lobby Room               ---
+----------------------------------------------</code></pre>
+          </li>
+          <li><strong>Etape 2 :</strong> Affiche l'emplacement actuel du joueur.
+            <pre><code class="nohighlight hljs">You entered the castle, you're in the lobby.
+You see two doors in front of you.</code></pre>
+          </li>
+          <li><strong>Etape 3 :</strong> Affiche les propositions possibles dans la pièce en cours. Puis, lit le choix
+            du joueur. On appellera la
+            fonction <code>choose_option()</code> déjà implémentée.
+            <pre><code class="nohighlight hljs">Which door do you want to select?
+0: Return back
+1: Right door
+2: Left door
+Your choice ?</code></pre>
+          </li>
+          <li>
+            <strong>Etape 4 :</strong> Dirige le joueur selon son choix :
+            <ul>
+              <li>Si le joueur choisit de se retirer il perd le jeu. On appellera pour cela la procédure
+                <code>game_over()</code> déjà implémentée avec un message personnalisé.
+                <pre><code class="hljs nohighlight">=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+|                G A M E   O V E R                 |
+|      You choose to escape you are a coward.      |
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</code></pre>
+              </li>
+              <li>Si le joueur choisit la porte droite il sera dirigé vers la salle de l'ours. On appelle la procédure
+                <code>bear_room()</code>, qui sera implémentée par la suite.
+              </li>
+              <li>Si le joueur choisit la porte gauche il sera dirigé vers la salle du monstre. On appelle la procédure
+                <code>monster_room()</code>, qui sera implémentée par la suite.
+              </li>
+            </ul>
+          </li>
+        </ol>
+
+        <h4>Correction</h4>
+
+        <p>La procédure déjà décrite pourra être implémentée comme suit :</p>
+
+        <div>
+          <pre><code class="language-python">def lobby_room():
+    # Etape 1
+    show_title('Lobby Room')
+    
+    # Etape 2
+    print("You entered the castle, you're in the lobby.")
+    print("You see two doors in front of you.")
+    
+    # Etape 3
+    choice = choose_option("Which door do you want to select?",
+                           "Right door", 
+                           "Left door")
+    
+    # Etape 4
+    if choice == '0':
+        game_over('You choose to escape you are a coward.')
+    elif choice == '1':
+        bear_room()
+    else:
+        monster_room()
+
+## Programme principal ##
+lobby_room()</code></pre>
+        </div>
+      </section>
+
+      <section>
+        <h3>Procédure bear_room()</h3>
+
+        <p>Implémenter la procédure <code>bear_room()</code> de la même manière que la procédure
+          <code>lobby_room()</code>.
+        </p>
+
+        <div>
+          <figure>
+            <img src="assets/images/castle05.png" alt="Salle de l'Ours" class="h7cm">
+            <figcaption>Salle de l'Ours</figcaption>
+          </figure>
+        </div>
+
+        <p>Cette procédure :</p>
+        <ol>
+          <li><strong>Etape 1 :</strong> Affiche un titre qui contient le nom du jeu ainsi que le nom de la pièce. On
+            appellera pour cela la
+            procédure <code>show_title()</code>, déjà implémentée.
+            <pre><code class="nohighlight hljs">----------------------------------------------
+---      D I A M O N D   H U N T E R       ---
+---               Bear Room                ---
+----------------------------------------------</code></pre>
+          </li>
+          <li><strong>Etape 2 :</strong> Affiche l'emplacement actuel du joueur.
+            <pre><code class="nohighlight hljs">You're in the Bear room.
+You see a huge bear in front of you.</code></pre>
+          </li>
+          <li><strong>Etape 3 :</strong> Affiche les propositions possibles dans la pièce en cours. Puis, lit le choix
+            du joueur. On appellera la
+            fonction <code>choose_option()</code> déjà implémentée.
+            <pre><code class="nohighlight hljs">What you want to do?
+0: Return back
+1: Fight the bear
+2: Open left door
+Your choice ?</code></pre>
+          </li>
+          <li>
+            <strong>Etape 4 :</strong> Dirige le joueur selon son choix :
+            <ul>
+              <li>Si le joueur choisit de se retirer il se retrouve dans la salle commune. On appellera pour cela la
+                procédure <code>lobby_room()</code> qui a été déjà implémentée.
+              </li>
+              <li>Si le joueur choisit de combattre l'ours il perd le jeu, vaincu par celui-ci.
+              </li>
+              <li>Si le joueur choisit d'échapper par la porte de gauche, il se retrouve également dans la salle
+                commune.</li>
+            </ul>
+          </li>
+        </ol>
+
+      </section>
+
+      <section>
+        <h3 class="p-break">Procédure monster_room()</h3>
+
+        <p>Implémenter la procédure <code>monster_room()</code> de la même manière que les procédures
+          <code>lobby_room()</code> et <code>bear_room()</code>. Les messages affichés dans cette salle se trouvent dans
+          l'image suivante.
+        </p>
+
+        <p>Dans cette salle le joueur peut :</p>
+        <ul>
+          <li>Retourner dans la salle commune <code>lobby_room()</code>.</li>
+          <li>Battre le monstre et entrer la salle de diamond <code>diamond_room()</code>.</li>
+          <li>Choisir la porte gauche et perdre le jeu <code>game_over()</code>.</li>
+        </ul>
+
+        <div>
+          <figure>
+            <img src="assets/images/castle02.png" alt="Salle du Monstre" class="h7cm">
+            <figcaption>Salle du Monstre</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section>
+        <h3>Procédure diamond_room()</h3>
+
+        <p>Implémenter la procédure <code>diamond_room()</code> de la même manière que toutes les procédures
+          précédentes.</p>
+
+        <p>Dans cette salle le joueur peut :</p>
+        <ul>
+          <li>Retourner à la salle du monstre pour en retrouver un autre qui le remplace dans <code>monster_room()</code>.
+          </li>
+          <li>Perdre, <code>game_over()</code>, s'il veut forcer la caisse cadenassée en pensant gagner plus.</li>
+          <li>Gagner, <code>winner()</code>, s'il décide de prendre le diamond et de s'en aller.</li>
+        </ul>
+
+        <div>
+          <figure>
+            <img src="assets/images/castle03.png" alt="Salle du Diamond" class="h7cm">
+            <figcaption>Salle du Diamond</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section>
+        <h3>Programme Principal</h3>
+
+        <p>Lorsqu'on fait appel aux sous-programmes, il faudra toujours définir un <strong>programme principal</strong>.
+          Le <strong>programme principal</strong> définit l'ordre d'appel des sous-programmes.</p>
+
+        <p>Dans notre jeu, le joueur est initialement dans la salle commune pour celà, le programme principal contient
+          uniquement :</p>
+
+        <div>
+          <pre><code class="language-python">## Programme Principal ##
+lobby_room()</code></pre>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <footer class="d-print-none bg-dark text-white p-2">
+    <div class="text-center">Page créée avec ♥ par Mohamed Anis MANI</div>
+    <div class="text-center small">Année scolaire : 2020/2021</div>
+  </footer>
+
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/highlight.pack.js"></script>
+  <script src="assets/js/hljs.algorithm.js"></script>
+  <script src="assets/js/vue.min.js"></script>
+  <script src="assets/apps/roles.js"></script>
+  <script src="assets/js/pages.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script>
+</body>
+
+</html>

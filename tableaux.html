@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Les Tableaux</title>
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/default.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    caption {
+      caption-side: top;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <aside>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#aside_navbar"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span> Menu
+      </button>
+      <div class="collapse navbar-collapse" id="aside_navbar"></div>
+    </nav>
+  </aside>
+
+  <main class="container my-3">
+    <h1>Tombola</h1>
+
+    <article>
+      <h2>Tombola</h2>
+
+      <section>
+        <h3>Principe</h3>
+
+        <div>
+          <figure>
+            <img src="assets/images/image-tombola.png" alt="Tombola">
+            <figcaption>Tombola</figcaption>
+          </figure>
+        </div>
+
+        <p>A l'occasion de son anniversaire, une entreprise organise un Tombola pour ces employés. Tous les employés
+          peuvent
+          s'inscrire au Tombola sans frais dans le but de gagner des prix de valeur.</p>
+        <p>Afin de garantir la transparence des tirages aux sorts. On veut écrire un programme qui :</p>
+        <ul>
+          <li>Saisit le nombre de participants (5 &le; n &le; 20)</li>
+          <li>Saisit les noms des participants</li>
+          <li>Saisit le nombre de prix (1 &le; np &le; min(n, 10))</li>
+          <li>Saisit les noms des prix</li>
+          <li>Effectue le tirage aux sorts</li>
+          <li>Affiche le nom des gagnants ainsi que leurs prix</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Exemple d'exécution</h3>
+
+        <div id="ex1" class="border border-dark p-2 bg-light">
+          <div class="my-1" v-if="etape >= 0">
+            <label for="nb_parts">Donner le nombre de participants (5 &le; n &le; 20) ? </label>
+            <input v-if="etape == 0" type="number" name="nb_parts" id="nb_parts" v-model="n" min="5" max="20">
+            <span v-if="etape != 0">{{n}}</span>
+            <button class="btn btn-primary" v-if="etape == 0" v-on:click="onValiderEtape(0)"
+              v-bind:disabled="n < 5 || n > 20">Valider</button>
+          </div>
+
+          <div v-if="etape >= 1">
+            <div class="my-1"><strong>Noms des participants</strong></div>
+            <div class="my-1" v-for="(nom, i) in noms">
+              <label v-bind:for="'nom_' + i">Nom du {{i+1}}{{(i==0) ? 'er' : 'ème'}} participant ? </label>
+              <input v-if="etape == 1" type="text" v-bind:name="'nom_' + i" v-bind:id="'nom_' + i" v-model="noms[i]">
+              <span v-if="etape != 1">{{nom}}</span>
+            </div>
+            <button class="btn btn-primary" v-if="etape == 1" v-on:click="onValiderEtape(1)">Valider</button>
+          </div>
+
+          <div class="my-1" v-if="etape >= 2">
+            <label for="nb_prix">Donner le nombre de prix (1 &le; np &le; {{Math.min(n, 10)}}) ? </label>
+            <input v-if="etape == 2" type="number" name="nb_prix" id="nb_prix" v-model="np" min="1"
+              v-bind:max="Math.min(n, 10)">
+            <span v-if="etape != 2">{{np}}</span>
+            <button class="btn btn-primary" v-if="etape == 2" v-on:click="onValiderEtape(2)"
+              v-bind:disabled="np < 1 || np > Math.min(n, 10)">Valider</button>
+          </div>
+
+          <div v-if="etape >= 3">
+            <div class="my-1"><strong>Liste des prix</strong></div>
+            <div class="my-1" v-for="(pr, i) in prix">
+              <label v-bind:for="'prix_' + i">{{i+1}}{{(i==0) ? 'er' : 'ème'}} prix ? </label>
+              <input v-if="etape == 3" type="text" v-bind:name="'prix_' + i" v-bind:id="'prix_' + i" v-model="prix[i]">
+              <span v-if="etape != 3">{{pr}}</span>
+            </div>
+            <button class="btn btn-primary" v-if="etape == 3" v-on:click="onValiderEtape(3)">Valider</button>
+          </div>
+
+          <div v-if="etape >= 4">
+            <div class="my-1"><strong>Liste des gagnants</strong></div>
+            <div class="my-1" v-for="(cadeau, i) in cadeaux">
+              <strong>{{cadeau}}</strong> gagne <strong>{{prix[i]}}</strong>
+            </div>
+            <button class="btn btn-primary d-print-none" v-if="etape == 4"
+              v-on:click="onValiderEtape(-1)">Rejouer</button>
+          </div>
+        </div>
+      </section>
+    </article>
+
+    <article>
+      <h2>Implémentation</h2>
+
+      <section>
+        <h3>Deux gagnants, deux prix</h3>
+
+        <p>On suppose qu'il y a deux participants et deux prix à gagner.</p>
+
+        <ul>
+          <li>iPad</li>
+          <li>iPhone</li>
+        </ul>
+
+        <p>Ecrire un algorithme pour traiter ce cas.</p>
+      </section>
+
+      <section>
+        <h3>Deux participants, deux gagnants (solution)</h3>
+
+        <p>On remarque que dans ce premier cas il existe deux possibilités.</p>
+
+        <table class="table table-bordered border-dark w-50 m-auto">
+          <tbody>
+            <tr>
+              <th>Cas</th>
+              <td>1</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <th>P1</th>
+              <td>iPad</td>
+              <td>iPhone</td>
+            </tr>
+            <tr>
+              <th>P2</th>
+              <td>iPhone</td>
+              <td>iPad</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4>Algorithme</h4>
+        <div>
+          <pre><code class="language-algorithm">Programme tombola_v1
+Début
+  Ecrire("Nom du 1er participant : "); Lire(p1)
+  Ecrire("Nom du 2nd participant : "); Lire(p2)
+  t &larr; alea(1, 2)
+  Si t = 1 Alors
+    g1 &larr; "iPad"
+    g2 &larr; "iPhone"
+  Sinon
+    g2 &larr; "iPad"
+    g1 &larr; "iPhone"
+  Fin Si
+  Ecrire(p1, "gagne", g1)
+  Ecrire(p2, "gagne", g2)
+Fin</code></pre>
+        </div>
+
+        <h4>TDO</h4>
+        <div>
+          <table class="table table-bordered border-dark w-50 m-auto">
+            <thead>
+              <tr>
+                <th>Objet</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>p1, p2<br>t<br>g1, g2</td>
+                <td>chaine<br>entier<br>chaine</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h3>Trois participants, trois gagnants</h3>
+
+        <p>On suppose qu'il y a trois participants et trois prix à gagner.</p>
+
+        <ul>
+          <li>iPad</li>
+          <li>iPhone</li>
+          <li>Samsung S9</li>
+        </ul>
+
+        <p>Ecrire un algorithme pour traiter ce cas.</p>
+      </section>
+
+      <section class="p-break">
+        <h3>Trois participants, trois gagnants (solution)</h3>
+
+        <p>On remarque que dans ce premier cas il existe six possibilités.</p>
+
+        <table class="table table-bordered border-dark w-75 m-auto">
+          <tbody>
+            <tr>
+              <th>Cas</th>
+              <td>1</td>
+              <td>2</td>
+              <td>3</td>
+              <td>4</td>
+              <td>5</td>
+              <td>6</td>
+            </tr>
+            <tr>
+              <th>P1</th>
+              <td>iPad</td>
+              <td>iPad</td>
+              <td>iPhone</td>
+              <td>iPhone</td>
+              <td>Samsung S9</td>
+              <td>Samsung S9</td>
+            </tr>
+            <tr>
+              <th>P2</th>
+              <td>iPhone</td>
+              <td>Samsung S9</td>
+              <td>iPad</td>
+              <td>Samsung S9</td>
+              <td>iPhone</td>
+              <td>iPad</td>
+            </tr>
+            <tr>
+              <th>P3</th>
+              <td>Samsung S9</td>
+              <td>iPhone</td>
+              <td>Samsung S9</td>
+              <td>iPad</td>
+              <td>iPad</td>
+              <td>iPhone</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4>Algorithme</h4>
+        <div>
+          <pre><code class="language-algorithm">Programme tombola_v2
+Début
+  Ecrire("Nom du 1er participant : "); Lire(p1)
+  Ecrire("Nom du 2nd participant : "); Lire(p2)
+  Ecrire("Nom du 3ème participant : "); Lire(p3)
+  t &larr; alea(1, 6)
+  Si t = 1 Alors
+    g1 &larr; "iPad"
+    g2 &larr; "iPhone"
+    g3 &larr; "Samsung S9"
+  Sinon Si t = 2 Alors
+    g1 &larr; "iPad"
+    g2 &larr; "Samsung S9"
+    g3 &larr; "iPhone"
+  Sinon Si t = 3 Alors
+    g1 &larr; "iPhone"
+    g2 &larr; "iPad"
+    g3 &larr; "Samsung S9"
+  Sinon Si t = 4 Alors
+    g1 &larr; "iPhone"
+    g2 &larr; "Samsung S9"
+    g3 &larr; "iPad"
+  Sinon Si t = 5 Alors
+    g1 &larr; "Samsung S9"
+    g2 &larr; "iPhone"
+    g3 &larr; "iPad"
+  Sinon
+    g1 &larr; "Samsung S9"
+    g2 &larr; "iPad"  
+    g3 &larr; "iPhone"
+  Fin Si
+  Ecrire(p1, "gagne", g1)
+  Ecrire(p2, "gagne", g2)
+  Ecrire(p3, "gagne", g3)
+Fin</code></pre>
+        </div>
+
+        <h4>TDO</h4>
+        <div>
+          <table class="table table-bordered border-dark w-50 m-auto">
+            <thead>
+              <tr>
+                <th>Objet</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>p1, p2, p3<br>t<br>g1, g2, g3</td>
+                <td>chaine<br>entier<br>chaine</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h3>Cas général</h3>
+
+        <p>Avec quatre participants et quatre gagnants on décompte 24 possibilités. Avec cinq, le nombre de possibilités
+          monte à 120. On en déduit qu'avec n participants qui peuvent gagner tous, il existe n! possibilités.</p>
+
+        <p class="text-center"><strong>n! = 1 &times; 2 &times; 3 &times; ... &times; n</strong></p>
+
+        <p>En conclusion, l'algorithme donné pour traiter deux ou trois participants n'est pas valable à partir de
+          quatre participants ou plus.</p>
+
+        <p>La solution la plus simple consiste à utiliser deux tableaux l'un pour les participant et l'autre pour les
+          prix. Puis, mélanger le tableau qui contient les noms des participants.</p>
+      </section>
+    </article>
+
+    <article>
+      <h2>Les tableaux</h2>
+
+      <section>
+        <h3>Définition</h3>
+
+        <p>Un tableau est une structure de données. Il est utilisé pour stocker <u>plusieurs valeurs de même type</u>.
+        </p>
+        <p>Les éléments d'un tableau sont accessibles grâce à leurs indices, commençant du zéro.</p>
+
+        <h4>Exemples</h4>
+        <div class="row">
+          <div class="col-sm-6 col-xl-3">
+            <table class="table table-borderless table-sm col-4 m-auto small">
+              <tbody>
+                <tr>
+                  <td class="border border-dark">Amine</td>
+                  <td class="border border-dark">Israa</td>
+                  <td class="border border-dark">Sirine</td>
+                  <td class="border border-dark">Eya</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>2</td>
+                  <td>3</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="small">Tableau <code>noms</code> contenant les noms d'un groupe de quatre élèves, des chaines de
+              caractères.</p>
+          </div>
+          <div class="col-sm-6 col-xl-3">
+            <table class="table table-borderless table-sm col-5 m-auto small">
+              <tbody>
+                <tr>
+                  <td class="border border-dark">9.75</td>
+                  <td class="border border-dark">16.5</td>
+                  <td class="border border-dark">14.25</td>
+                  <td class="border border-dark">12.75</td>
+                  <td class="border border-dark">6.5</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>4</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="small">Tableau <code>moy</code> contenant les moyennes, des réels, de 5 matières (0 : Arabe, 1 :
+              Mathématiques, 2 : Techniques).</p>
+          </div>
+          <div class="col-sm-6 col-xl-3">
+            <table class="table table-borderless table-sm col-6 m-auto small">
+              <tbody>
+                <tr>
+                  <td class="border border-dark">Faux</td>
+                  <td class="border border-dark">Faux</td>
+                  <td class="border border-dark">Vrai</td>
+                  <td class="border border-dark">Faux</td>
+                  <td class="border border-dark">Vrai</td>
+                  <td class="border border-dark">Faux</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>4</td>
+                  <td>5</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="small">Tableau <code>absences</code> qui indique les jours d'absences d'un élève pendant une
+              semaine (0 : Lundi, 1 : Mardi, etc.). Vrai signifie que l'élève est absent.</p>
+          </div>
+          <div class="col-sm-6 col-xl-3">
+            <table class="table table-borderless table-sm col-7 m-auto small">
+              <tbody>
+                <tr>
+                  <td class="border border-dark">20</td>
+                  <td class="border border-dark">30</td>
+                  <td class="border border-dark">25</td>
+                  <td class="border border-dark">55</td>
+                  <td class="border border-dark">40</td>
+                  <td class="border border-dark">...</td>
+                  <td class="border border-dark">88</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>4</td>
+                  <td>...</td>
+                  <td>29</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="small">Tableau <code>pieces</code> qui indique le nombres de pièces vendues par un marchand,
+              pendant un mois.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h3>Déclaration</h3>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <p>Pour décalarer un tableau on commence par le <b>Tableau de Déclaration de Nouveaux Types</b> (TDNT) :</p>
+
+            <table class="table table-bordered border-dark">
+              <thead>
+                <tr>
+                  <th>T.D.N.T</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>tab = Tableau de <strong>n</strong> <strong><em>type</em></strong></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <dl>
+              <dt>n</dt>
+              <dd>Indique le nombre de cases du tableau</dd>
+              <dt>type</dt>
+              <dd>Indique le type qui sera stocké dans une case du tableau</dd>
+            </dl>
+          </div>
+          <div class="col-sm-6">
+            <p>Au niveau du <b>Tableau de Déclaration d'Objets</b> (TDO) :</p>
+
+            <table class="table table-bordered border-dark">
+              <thead>
+                <tr>
+                  <th>Objet</th>
+                  <th>Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <p>...</p>
+                    <p>t, t2, ...</p>
+                    <p>...</p>
+                  </td>
+                  <td>
+                    <p>...</p>
+                    <p>tab</p>
+                    <p>...</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <h4>Exemple</h4>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <p>Pour décalarer les tableaux données en exemple, ci-dessus, on écrit :</p>
+            <table class="table table-bordered border-dark m-auto">
+              <thead>
+                <tr>
+                  <th>T.D.N.T</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>tab_chaine = Tableau de 4 chaine<br>
+                    tab_reel = Tableau de 6 réel<br>
+                    tab_bool = Tableau de 6 booléen<br>
+                    tab_ent = Tableau de 30 entier
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-sm-6">
+            <p>Au niveau du TDO, on pourra, par exemple, écrire :</p>
+
+            <table class="table table-bordered border-dark m-auto">
+              <thead>
+                <tr>
+                  <th>Objet</th>
+                  <th>Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    nom<br>
+                    moy<br>
+                    absences<br>
+                    pieces
+                  </td>
+                  <td>
+                    tab_chaine<br>
+                    tab_reel<br>
+                    tab_bool<br>
+                    tab_ent
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h3>Accès</h3>
+
+        <p>La taille maximale d'un tableau étant définie lors de sa déclaration, l'accès a ses éléments du tableau se
+          fait
+          selon leurs indices.</p>
+
+        <div>
+          <pre><code class="language-algorithm">// On suppose que nom est un tableau de noms
+nom[0] // contient le 1er nom 
+nom[1] // contient le 2nd nom
+...
+nom[i] // contient le (i+1)ème nom</code></pre>
+        </div>
+
+        <p>Ainsi, pour affecter une valeur à un élément on écrit :</p>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <h5>Algorithme</h5>
+            <pre><code class="language-algorithm">nom[0] &larr; "Bassem" // 1er nom
+moy[3] &larr; 12.5 // 4ème moyenne</code></pre>
+          </div>
+          <div class="col-sm-6">
+            <h5>Python</h5>
+            <pre><code class="language-python">nom[0] = "Bassem" # 1er nom
+moy[3] = 12.5 # 4ème moyenne</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h3>Remplissage</h3>
+
+        <p>Souvent, l'utilisateur effectue le remplissage des tableaux avant leur utilisation. Ainsi, pour remplir un
+          tableau avec les noms des participants dans un Tombola, on peut écrire :</p>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <h5>Algorithme</h5>
+            <pre><code class="language-algorithm">Pour i de 0 à 9 Faire
+  Ecrire("Nom du", i+1, "ème participant ? ")
+  Lire(tpart[i])
+Fin Pour</code></pre>
+          </div>
+          <div class="col-sm-6">
+            <h5>Python</h5>
+            <pre><code class="language-python"># Initialiser le tableau
+tpart = [""] * 10
+for i in range(10):
+  tpart[i] = input(f"Nom du {i+1}ème participant ? ")</code></pre>
+          </div>
+        </div>
+
+        <h4>Activité</h4>
+
+        <p>Comment remplir le tableau <code>tprix</code> avec les noms des prix du Tombola ?</p>
+      </section>
+
+      <section>
+        <h3>Affichage</h3>
+
+        <p>Comme le remplissage du tableau, son affichage se fait élément par élément. Pour afficher les noms des
+          gagnants
+          d'un Tombola, ainsi que les prix qu'ils ont gagné, on écrit :</p>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <h5>Algorithme</h5>
+            <pre><code class="language-algorithm">Pour i de 0 à 9 Faire
+  Ecrire(tpart[i], "gagne", tprix[i])
+Fin Pour</code></pre>
+          </div>
+          <div class="col-sm-6">
+            <h5>Python</h5>
+            <pre><code class="language-python">for i in range(10):
+  print(tpart[i], "gagne", tprix[i])</code></pre>
+          </div>
+        </div>
+      </section>
+    </article>
+
+    <article>
+      <h2>Algorithmes</h2>
+
+      <section>
+        <h3>Saisie des données</h3>
+
+        <p>On demande de :</p>
+        <ul>
+          <li>Saisir le nombre de participants (5 &le; n &le; 20)</li>
+          <li>Saisir les noms des participants</li>
+          <li>Saisir le nombre de prix (1 &le; np &le; min(n, 10))</li>
+          <li>Saisir les noms des prix</li>
+        </ul>
+
+        <p>Donner l'algorithme corresponsant à chacune de ces étapes ?</p>
+      </section>
+
+      <section>
+        <h3>Saisie des données (Solution)</h3>
+
+        <div>
+          <pre><code class="language-algorithm">// Nombre de participants
+Répéter
+  Ecrire("Donner le nombre de participants ? ")
+  Lire(n)
+Jusqu'à (5 &le; n &le; 20)
+// Noms des participants
+Pour i de 0 à n-1 Faire
+  Ecrire("Nom du participant n°", i+1, " ? ")
+  Lire(noms[i])
+Fin Pour
+nmp &larr; ent(n &le; 10) * n + ent(n &gt; 10) * 10
+// Nombre de prix
+Répéter
+  Ecrire("Donner le nombre de prix ? ")
+  Lire(np)
+Jusqu'à (1 &le; np &le; nmp)
+// Noms des prix
+Pour i de 0 à np-1 Faire
+  Ecrire("Prix n°", i+1, " ? ")
+  Lire(prix[i])
+Fin Pour</code></pre>
+        </div>
+      </section>
+
+      <section>
+        <h3>Tirage au sort</h3>
+
+        <p>On veut réaliser le tirage au sort des noms des participants gagnants.</p>
+
+        <p>La méthode la plus simple est de mélanger le tableau des noms. Et de prendre par la suite les <code>np</code>
+          premiers <code>noms</code>.</p>
+
+        <div id="ex2">
+          <p>On suppose que le tableau initial <code>noms</code> contient les {{n}} noms suivants : </p>
+          <table class="table table-borderless table-sm border-dark col-5 w-75 m-auto">
+            <tr>
+              <td v-for="nom in noms" class="border border-dark">{{nom}}</td>
+            </tr>
+            <tr>
+              <td v-for="(nom, i) in noms">{{i}}</td>
+            </tr>
+          </table>
+
+          <p>On suppose qu'il y a uniquement {{np}} prix à gagner. On fait le mélange du tableau de telle manière à
+            obtenir le tableau suivant. Les {{np}} premières cases de ce tableau contiennent les noms des gagnants.</p>
+          <table class="table table-borderless table-sm border-dark col-5 w-75 m-auto">
+            <tr>
+              <td v-for="(nom, i) in noms2" class="border border-dark"
+                v-bind:class="{'bg-secondary text-light': i < np}">{{nom}}</td>
+            </tr>
+            <tr>
+              <td v-for="(nom, i) in noms2">{{i}}</td>
+            </tr>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h3>Tirage au sort (solution)</h3>
+
+        <div>
+          <pre><code class="language-algorithm">// Tirage au sort
+Pour i de 0 à np-1 Faire
+  // Sélectionner un numéro de case au hasard
+  j &larr; aléa(0, n-1)
+  // Permuter avec la ième case
+  temp &larr; noms[i]
+  noms[i] &larr; noms[j]
+  noms[j] &larr; temp
+Fin Pour</code></pre>
+        </div>
+      </section>
+
+      <section>
+        <h3>Affichage des gagnants</h3>
+
+        <p>On demande d'afficher les noms des gagnants ainsi que les prix qu'ils ont gagné.</p>
+
+        <h4>Exemple</h4>
+
+        <div id="ex3">
+          <p>On suppose qu'il y a {{np}} prix à gagner pour {{n}} participants. Les {{np}} premiers participants sont
+            les gagnants de ces {{np}} prix.</p>
+          <table class="table table-borderless table-sm border-dark col-5 w-75 m-auto small">
+            <caption>Tableau <code>noms</code></caption>
+            <tbody>
+              <tr>
+                <td v-for="(nom, i) in noms" class="border border-dark" v-bind:class="{'bg-danger text-light': i < np}">
+                  {{nom}}
+                </td>
+              </tr>
+              <tr>
+                <td v-for="(nom, i) in noms">{{i}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table table-borderless table-sm border-dark col-5 w-75 m-auto small">
+            <caption>Tableau <code>prix</code></caption>
+            <tbody>
+              <tr>
+                <td v-for="(pr, i) in prix" class="border border-dark">{{pr}}</td>
+                <td v-for="i in 5-prix.length">&nbsp;</td>
+              </tr>
+              <tr>
+                <td v-for="(pr, i) in prix">{{i}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>On demande d'écrire l'algorithme qui permet d'afficher les gagnants.</p>
+      </section>
+
+      <section>
+        <h3>Affichage des gagnants (Solution)</h3>
+        <div>
+          <pre><code class="language-algorithm">// Affichage des gagnants
+Pour i de 0 à np-1 Faire
+  Ecrire(noms[i], "gagne", prix[i])
+Fin Pour</code></pre>
+        </div>
+      </section>
+
+      <section>
+        <h3>Implémentation</h3>
+        <div>
+          <pre><code class="language-python">from random import randint
+
+# Saisie du nombre de participants
+while True:
+    n = int(input("Donner le nombre de participants (5 ≤ n ≤ 20) ? "))
+    if 5 <= n <= 20:
+        break
+
+# Déclaration du tableau de participants
+noms = [""] * n
+
+# Saisie des noms
+for i in range(n):
+    noms[i] = input(f"Donner le nom du {i+1}ème participant ? ")
+
+# Nombre maximal de prix
+nmp = int(n > 10) * 10 + int(n <= 10) * n
+
+# Saisie du nombre de prix
+while True:
+    np = int(input(f"Donner le nombre de prix (1 ≤ np ≤ {nmp}) ? "))
+    if 1 <= np <= nmp:
+        break
+
+# Déclaration du tableau des prix
+prix = [""] * np
+
+# Saisie des noms
+for i in range(np):
+    prix[i] = input(f"Donner le nom du {i+1}ème prix ? ")
+
+# Tirage au sort
+for i in range(n):
+    j = randint(0, n-1)
+    noms[i], noms[j] = noms[j], noms[i]
+
+# Affichage des gagnants
+for i in range(np):
+    print(noms[i], "gagne", prix[i])</code></pre>
+        </div>
+
+      </section>
+    </article>
+
+    <article>
+      <h2>Série d'exercices</h2>
+
+      <section>
+        <h3>Notes d'une classe</h3>
+
+        <p>Un enseignant au lycée veut écrire un programme qui :</p>
+        <ol>
+          <li>Saisit le nombre des élèves <code>n</code>, (3 &le; n &le; 36) ?</li>
+          <li>Saisit les notes des élèves dans un tableau <code>notes</code>. <strong>Vérifier que les notes sont bien
+              dans l'intervalle [0, 20].</strong></li>
+          <li>Déterminer la moyenne de la classe <code>moy</code>.</li>
+          <li>Calculer la meilleure <code>notemax</code> et la pire note <code>notemin</code>.</li>
+          <li>Calculer le nombre d'élèves :
+            <ul>
+              <li><code>nbr_moy</code> qui ont obtenu au dessus de la moyenne.</li>
+              <li><code>nbr_el</code> qui ont obtenu une note au dessus de la moyenne de la classe <code>moy</code>.
+              </li>
+            </ul>
+          </li>
+          <li>Calculer le nombre de notes par intervalles.
+            <ul>
+              <li>[0, 5[</li>
+              <li>[5, 10[</li>
+              <li>[10, 15[</li>
+              <li>[15, 20[</li>
+              <li>[20, +&infin;[</li>
+            </ul>
+          </li>
+          <li>Afficher toutes les notes.</li>
+          <li>Afficher les notes sans duplication.</li>
+        </ol>
+
+        <h4>Exemple</h4>
+        <div id="ex4" class="my-2 p-2 bg-light border border-dark">
+          <div v-if="etape >= 0">
+            Donner le nombre des élèves (3 &le; n &le; 36) ?
+            <input v-if="etape == 0" type="number" name="n" id="n" v-model.number="n" min="3" max="36">
+            <span v-if="etape != 0">{{n}}</span>
+            <button class="btn btn-primary" v-if="etape == 0" v-on:click="onValiderEtape(0)"
+              v-bind:disabled="n < 3 || n > 36">Valider</button>
+          </div>
+
+          <div v-if="etape >= 1">
+            <strong>Notes des élèves</strong>
+            <div v-for="(note, index) in notes">
+              Note du {{index+1}}<sup>{{index == 0 ? 'er' : 'ème'}}</sup> élève ?
+              <input v-if="etape == 1" type="number" v-bind:name="'note_' + index" v-bind:id="'note_' + index"
+                v-model.number="notes[index]" min="0" max="20" step="0.25">
+              <span v-if="etape != 1">{{note}}</span>
+            </div>
+            <button class="btn btn-primary" v-if="etape == 1" v-on:click="onValiderEtape(1)">Valider</button>
+          </div>
+
+          <div v-if="etape >= 2">
+            <div><strong>Statistiques</strong></div>
+            <span>La moyenne de la classe est : {{moy.toFixed(2)}}</span>
+            <button class="btn btn-primary" v-if="etape == 2" v-on:click="onValiderEtape(2)">Valider</button>
+          </div>
+
+          <div v-if="etape >= 3">
+            <div>La meilleure note est : {{notemax.toFixed(2)}}</div>
+            <div>La pire note est : {{notemin.toFixed(2)}}</div>
+            <button class="btn btn-primary" v-if="etape == 3" v-on:click="onValiderEtape(3)">Valider</button>
+          </div>
+
+          <div v-if="etape >= 4">
+            <div>Le nombre d'élèves qui ont obtenu au dessus de 10 : {{nbr_moy}}</div>
+            <div>Le nombre d'élèves qui ont obtenu au dessus de {{moy.toFixed(2)}} : {{nbr_el}}</div>
+            <button class="btn btn-primary" v-if="etape == 4" v-on:click="onValiderEtape(4)">Valider</button>
+          </div>
+
+          <div v-if="etape >= 5">
+            <div><strong>Notes par intervalles</strong></div>
+            <div v-for="(nb, index) in nbi">Nombre de notes entre [{{index*5}}, {{(index+1)*5}}[ : {{nb}}</div>
+            <button class="btn btn-primary" v-if="etape == 5" v-on:click="onValiderEtape(5)">Valider</button>
+          </div>
+
+          <div v-if="etape >= 6">
+            <div><strong>Notes sans duplication</strong></div>
+            <span v-for="(note, i) in notes_sd">{{i ? ", " : ""}}{{note}}
+          </div>
+          <button class="btn btn-primary" v-if="etape == 6" v-on:click="onValiderEtape(-1)">Rejouer</button>
+        </div>
+
+        <h4>Correction</h4>
+        <div>
+          <pre><code class="language-python"># Un enseignant au lycée veut écrire un programme qui :
+# (1) Saisit le nombre des élèves n, (3 ≤ n ≤ 36)
+while True:
+    n = int(input("Donner le nombre (3 ≤ n ≤ 36) ? "))
+    if 3 &lt;= n &lt;= 36:
+        break
+
+# (2) Saisit les notes des élèves dans un tableau notes.
+# Vérifier que les notes sont dans l'intervalle [0, 20].
+notes = [0.0] * n
+for i in range(n):
+    while True:
+        r = 'er' if i+1 == 1 else 'ème'
+        notes[i] = float(input(f'Note du {i+1}{r} élève ? '))
+        if 0.0 &lt;= notes[i] &lt;= 20.0:
+            break
+
+# (3) Déterminer la moyenne de la classe moy.
+s = 0
+for i in range(n):
+    s = s + notes[i]
+moy = s / n
+print("La moyenne de la classe est :", moy)
+
+# (4) Calculer la meilleure notemax et la pire note notemin.
+notemax = notes[0]
+for i in range(1, n):
+    if notes[i] > notemax:
+        notemax = notes[i]
+print("La meilleure note est :", notemax)
+
+notemin = notes[0]
+for i in range(1, n):
+    if notes[i] &lt; notemin:
+        notemin = notes[i]
+print("La pire note est :", notemin)
+
+# (5) Calculer le nombre d'élèves :
+# - nbr_moy qui ont obtenu au dessus de la moyenne.
+# - nbr_el qui ont obtenu une note au dessus de la moyenne de la classe moy.
+nbr_moy = 0
+for i in range(n):
+    if notes[i] >= 10:
+        nbr_moy = nbr_moy + 1
+print("Le nombre d'élèves qui ont obtenu au dessus de 10 :", nbr_moy)
+
+nbr_el = 0
+for i in range(n):
+    if notes[i] >= moy:
+        nbr_el = nbr_el + 1
+print("Le nombre d'élèves qui ont obtenu au dessus de", moy, ":", nbr_el)
+
+# (6) Calculer le nombre de notes par intervalles.
+# [0, 5[
+# [5, 10[
+# [10, 15[
+# [15, 20[
+# [20, +∞[
+nb_nt = [0] * 5
+for i in range(n):
+    intervalle = int(notes[i]) // 5
+    nb_nt[intervalle] = nb_nt[intervalle] + 1
+
+for i in range(5):
+    print(f"Nombre de notes entre [{i*5}, {(i+1)*5}[ : {nb_nt[i]}")</code></pre>
+        </div>
+      </section>
+
+      <section>
+        <h3>Sièges vides</h3>
+
+        <p>Lorsqu'un client réserve une place dans un vol chez une companie aérienne cette dernière lui indique le
+          numéro de son siège sur le ticket.</p>
+
+        <div>
+          <figure>
+            <img src="assets/images/seat_number.jpg" alt="Numéro de siège">
+            <figcaption>Numéro de siège</figcaption>
+          </figure>
+        </div>
+
+        <p>On souhaite écrire un petit programme qui étant donné la liste des numéros des sièges réservés dans le vol,
+          détermine la liste des numéros de sièges disponibles.</p>
+
+        <div>
+          <figure>
+            <img src="assets/images/plan-cabine.jpg" alt="Plan de cabine">
+            <figcaption>Plan de cabine</figcaption>
+          </figure>
+        </div>
+
+        <div id="app-5">
+          <p>Nous voulons nous intérreser dans ce problème aux sièges d'un seule rangée, par exemple A, dans notre cas
+            la rangée comporte 20 sièges, comme indiqués dans la figure précédente.</p>
+          <p>On suppose que les sièges réservés sont :</p>
+          <table class="table table-borderless table-sm" v-bind:class="'col-' + reserves.length">
+            <tbody>
+              <tr>
+                <td class="border border-dark" v-for="(ns, i) in reserves">{{ns}}</td>
+              </tr>
+              <tr>
+                <td v-for="(ns, i) in reserves">{{i}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>Les sièges libres dans l'avion sont, alors :</p>
+          <table class="table table-borderless table-sm" v-bind:class="'col-' + libres.length">
+            <tbody>
+              <tr>
+                <td class="border border-dark" v-for="(ns, i) in libres">{{ns}}</td>
+              </tr>
+              <tr>
+                <td v-for="(ns, i) in libres">{{i}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Travail demandé</h4>
+
+        <p>On demande d'écrire un algorithme qui :</p>
+        <ol>
+          <li>Saisit le nombre total de sièges disponibles dans une rangée de la cabine d'un avion (10 &le; nts &le;
+            30).
+          </li>
+          <li>Saisit le nombre de sièges réservés (1 &le; nsr &le; nts)</li>
+          <li>Remplit un tableau <strong>res</strong> par les numéros des sièges réservés, d'une façon aléatoire et sans
+            répétitions.</li>
+          <li>Détermine les numéros des sièges libres dans un tableau <strong>lib</strong>, ainsi que le nombre de
+            sièges libre <strong>nsl</strong>.</li>
+          <li>Affiche les numéros des sièges réservés et les numéros des sièges libres.</li>
+        </ol>
+      </section>
+
+      <section>
+        <h3>Code à barre EAN 8</h3>
+
+        <p>Dans les grandes surfaces et dans les super-marchés on utilise souvent les codes à barres pour identifier les
+          articles exposés en vente.</p>
+
+        <p>Le code <strong>EAN8</strong> est un code à barre composé de 8 chiffres :</p>
+        <ul>
+          <li>Les 2 premiers chiffres correspondent au pays de provenance du produit</li>
+          <li>Les 2 chiffres suivants indiquent l'entreprise qui a fabriqué le produit</li>
+          <li>Les 3 chiffres suivants correspondent au numéro de l'article</li>
+          <li>Le dernier chiffre est la clé de contrôle des 7 chiffres précédents</li>
+        </ul>
+
+        <div>
+          <figure>
+            <img src="assets/images/Barcode_EAN8.svg" alt="Code à barres" style="height: 150px;">
+            <figcaption>Code à barres EAN8</figcaption>
+          </figure>
+        </div>
+
+        <p>Dans ce problème nous allons nous intéresser au calul de cette clé de contrôle.</p>
+
+        <p>Par exemple, le calcul de la clé de contrôle du code EAN8 dont les 7 premiers chiffres sont
+          <strong>6583-325x</strong> (x étant la clé à calculer) se fait de la manière suivante :
+        </p>
+
+        <div>
+          <table class="table table-bordered border-dark m-auto col-9">
+            <tbody>
+              <tr>
+                <td class="bg-dark text-light">Chiffre</td>
+                <td>6</td>
+                <td>5</td>
+                <td>8</td>
+                <td>3</td>
+                <td>3</td>
+                <td>2</td>
+                <td>5</td>
+                <td class="bg-dark text-light" rowspan="2">Total</td>
+              </tr>
+              <tr>
+                <td class="bg-dark text-light">Poids</td>
+                <td>3</td>
+                <td>1</td>
+                <td>3</td>
+                <td>1</td>
+                <td>3</td>
+                <td>1</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td class="bg-dark text-light">Résultat</td>
+                <td>18</td>
+                <td>5</td>
+                <td>24</td>
+                <td>3</td>
+                <td>9</td>
+                <td>2</td>
+                <td>15</td>
+                <td>76</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>La clé : x = 10 - (76 mod 10) = 4</p>
+        <p>D'où le code à barre sera : 6583-3254</p>
+
+        <h4>Travail demandé</h4>
+
+        <ol>
+          <li>Trouver la clé pour les codes à barres suivants :
+            <ul>
+              <li>4719-512x</li>
+              <li>9031-101x</li>
+              <li>0105-707x</li>
+              <li>1234-567x</li>
+            </ul>
+          </li>
+          <li>Ecrire l'algorithme d'un programme qui :
+            <ul>
+              <li>Saisit les 7 premiers chiffres d'un code EAN8 dans un tableau</li>
+              <li>Calcule la clé de contrôle</li>
+              <li>Affiche le code à barres</li>
+            </ul>
+          </li>
+        </ol>
+      </section>
+
+      <section>
+        <h3>La somme de contrôle</h3>
+
+        <p>Souvent, dans les réseaux industriels d'automates programmables industriels on utilise la somme de contrôle
+          <strong>checksum</strong> afin de calculer la bonne transmission des informations.
+        </p>
+
+        <p>L'opération se déroule comme suit :</p>
+        <ol>
+          <li>Calculer, dans un tableau, le code ASCII des caractères à transmettre.</li>
+          <li>Calculer à partir de ce tableau l'empreinte du message à partir des codes ASCII.</li>
+          <li>Vérifier si l'empreinte du message calculée correspond à celle qui a été reçue.</li>
+        </ol>
+
+        <div>
+          <figure>
+            <img src="assets/images/checksum.png" alt="Somme de contrôle">
+            <figcaption>Somme de contrôle</figcaption>
+          </figure>
+        </div>
+
+        <p>Dans la figure précédente, un capteur transmet à l'API le message "Hello". Pour calculer la somme de contrôle
+          de ce message on commence par retrouver les codes ASCII des lettres de ce message.</p>
+        <table class="table table-bordered border-dark col-6 w-75 m-auto">
+          <tbody>
+            <tr>
+              <td>Caractère</td>
+              <td>"H"</td>
+              <td>"e"</td>
+              <td>"l"</td>
+              <td>"l"</td>
+              <td>"o"</td>
+            </tr>
+            <tr>
+              <td>ASCII</td>
+              <td>72</td>
+              <td>101</td>
+              <td>108</td>
+              <td>108</td>
+              <td>111</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>On calcule la somme des codes ASCII :<br>s1 = (72+101+108+108+111) mod 256 = 500 mod 256 = 254 =
+          F4<sub>(16)</sub></p>
+        <p>On calcule la somme pondérée des codes ASCII :<br>s2 =
+          (72&times;1+101&times;2+101&times;3+108&times;4+111&times;5) mod 256 = 1585 mod 256 = 49 = 31<sub>(16)</sub>
+        </p>
+        <p>L'empreinte du message est donc : F431</p>
+
+        <p>L'API reçoit le message "Hella", ainsi que la bonne empreinte, F431. Pour vérifier l'intégrité du message
+          reçu, il
+          faut recalculer la somme de contrôle de ce dernier message de la même façon.</p>
+        <table class="table table-bordered border-dark col-6 w-75 m-auto">
+          <tbody>
+            <tr>
+              <td>Caractère</td>
+              <td>"H"</td>
+              <td>"e"</td>
+              <td>"l"</td>
+              <td>"l"</td>
+              <td>"a"</td>
+            </tr>
+            <tr>
+              <td>ASCII</td>
+              <td>72</td>
+              <td>101</td>
+              <td>108</td>
+              <td>108</td>
+              <td>97</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>On calcule la somme des codes ASCII :<br>s1 = (72+101+108+108+97) mod 256 = 489 mod 256 = 230 =
+          E6<sub>(16)</sub></p>
+        <p>On calcule la somme pondérée des codes ASCII :<br>s2 =
+          (72&times;1+101&times;2+101&times;3+108&times;4+97&times;5) mod 256 = 1515 mod 256 = 235 = EB<sub>(16)</sub>
+        </p>
+        <p>L'empreinte du message reçu est donc : E6EB, comme elle est différente de l'empreinte du message d'origine
+          (F431), on en conclut un problème de transmission.</p>
+
+        <h4>Travail Demandé</h4>
+        <p>On veut écrire un programme qui :</p>
+        <ul>
+          <li>Saisit un message <code>msg</code> non vide reçu</li>
+          <li>Saisit une empreinte <code>emp_rcv</code> une chaine hexadécimale de 4 chiffres reçue</li>
+          <li>Calcule l'empreinte <code>emp_calc</code> de <code>msg</code> calculée</li>
+          <li>Vérifie si le message a été bien reçu ou non.</li>
+        </ul>
+      </section>
+    </article>
+  </main>
+
+  <footer class="d-print-none bg-dark text-white p-2">
+    <div class="text-center">Page créée avec ♥ par Mohamed Anis MANI</div>
+    <div class="text-center small">Année scolaire : 2020/2021</div>
+  </footer>
+
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/highlight.pack.js"></script>
+  <script src="assets/js/hljs.algorithm.js"></script>
+  <script src="assets/js/vue.min.js"></script>
+  <script src="assets/apps/tombola.js"></script>
+  <script src="assets/js/pages.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script>
+</body>
+
+</html>

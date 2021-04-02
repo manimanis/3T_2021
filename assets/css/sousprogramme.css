@@ -1,0 +1,83 @@
+#roles-game {
+	background-color: #e3d2ad;
+	padding: 20px;
+	box-sizing: border-box;
+	position: relative;
+	width: 600px;
+	margin: 0 auto;
+}
+#roles-game img {
+  max-width: 100%;
+}
+
+#roles-game p {
+  margin: 0 0 6px;
+  text-align: center;
+}
+
+#roles-game .game-over {
+  position: absolute;
+  z-index: 3;
+  background-color: #000000AA;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  color: #8e0000;
+  padding: 150px 50px;
+  font-size: 20pt;
+}
+
+#roles-game .box {
+  width: 100%;
+  background-color: #fff9;
+  padding: 20px;
+  border-radius: 20px;
+  border: 3px solid #999;
+}
+
+#roles-game .room {
+  position: relative;
+}
+
+#roles-game .room::before, #roles-game .room::after {
+	position: absolute;
+	content: "";
+	width: 128px;
+	height: 64px;
+	top: -40px;
+}
+
+#roles-game .room::after {
+	right: 0;
+}
+
+#roles-game .lobby::before, #roles-game .lobby::after {
+	background: transparent url(../images/lobby.webp);
+}
+
+#roles-game .monster::before, #roles-game .monster::after {
+	background: transparent url(../images/cute-monster.png);
+}
+
+#roles-game .bear::before, #roles-game .bear::after {
+	background: transparent url(../images/bear-icon.png);
+}
+
+#roles-game .diamond::before, #roles-game .diamond::after {
+	background: transparent url(../images/diamond.webp);
+}
+
+.bullet {
+	width: 100%;
+	font-size: 14pt;
+	background-color: #ffffff77;
+	padding: 10px;
+	border-radius: 10px;
+	margin: 10px 0 0;
+	border: 1px solid #301906;
+}
+
+.bullet button {
+  width: calc(33.3% - 5px);
+}
