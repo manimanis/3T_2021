@@ -2,60 +2,60 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evaluation n°1</title>
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/default.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <style>
-        caption {
-            caption-side: top;
-            text-align: center;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evaluation n°1 - Evaluations</title>
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/default.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    caption {
+      caption-side: top;
+      text-align: center;
+    }
+  </style>
 </head>
 
 <body>
-    <aside>
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#aside_navbar"
-                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span> Menu
-            </button>
-            <div class="collapse navbar-collapse" id="aside_navbar"></div>
-        </nav>
-    </aside>
+  <aside>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#aside_navbar"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span> Menu
+      </button>
+      <div class="collapse navbar-collapse" id="aside_navbar"></div>
+    </nav>
+  </aside>
 
-    <main class="container my-3">
-        <h1>DAB</h1>
+  <main class="container my-3">
+    <h1>Evaluations</h1>
 
-        <article>
-            <h2>DAB</h2>
+    <article>
+      <h2>DAB</h2>
 
-            <section>
-                <h3>Enoncé</h3>
+      <section>
+        <h3>Enoncé</h3>
 
-                <p>Devant le <abbr title="Distributeur Automatique de Billets">DAB</abbr> d'une banque se dresse une
-                    foule de <b>n</b> clients, 1 &le; n &le; 15, qui désirent faire des retraits d'argent.</p>
+        <p>Devant le <abbr title="Distributeur Automatique de Billets">DAB</abbr> d'une banque se dresse une
+          foule de <b>n</b> clients, 1 &le; n &le; 15, qui désirent faire des retraits d'argent.</p>
 
-                <p>Sachant que le distributeur dispose d'un montant initial, <code>mid &ge; 0</code>. Et qu'il :</p>
-                <ul>
-                    <li>N'autorise pas un retrait au dessus d'un montant donné, <code>mma &ge; 10</code>.</li>
-                    <li>N'autorise que le retrait d'un montant multiple de 10</li>
-                    <li>N'autorise pas le retrait d'un montant supérieur au montant restant dans le distributeur,
-                        <code>mr</code>.
-                    </li>
-                </ul>
+        <p>Sachant que le distributeur dispose d'un montant initial, <code>mid &ge; 0</code>. Et qu'il :</p>
+        <ul>
+          <li>N'autorise pas un retrait au dessus d'un montant donné, <code>mma &ge; 10</code>.</li>
+          <li>N'autorise que le retrait d'un montant multiple de 10</li>
+          <li>N'autorise pas le retrait d'un montant supérieur au montant restant dans le distributeur,
+            <code>mr</code>.
+          </li>
+        </ul>
 
-                <p>On demande de compléter l'algorithme, puis d'écrire le programme Python qui étant donné les montants
-                    que les clients veulent retirer, affiche les numéros de transactions invalides, ainsi que le montant
-                    restant <code>mr</code>, après que tous les clients aient terminé leurs transactions.</p>
+        <p>On demande de compléter l'algorithme, puis d'écrire le programme Python qui étant donné les montants
+          que les clients veulent retirer, affiche les numéros de transactions invalides, ainsi que le montant
+          restant <code>mr</code>, après que tous les clients aient terminé leurs transactions.</p>
 
-                <h4>Exemple</h4>
+        <h4>Exemple</h4>
 
-                <pre><code class="hljs nohighlight">Montant initial distributeur (mid &ge; 0) ? 600
+        <pre><code class="hljs nohighlight">Montant initial distributeur (mid &ge; 0) ? 600
 Montant maximal autorisé (mma &ge; 10) ? 250
 Nombre de clients (1 &le; n &le; 15) ? 8
 Montant retrait client 1 ? 160
@@ -73,25 +73,26 @@ Les transactions invalides sont numéro :
 - 8 => 100 DT
 Le montant restant = 60 DT</code></pre>
 
-                <h4>Explication</h4>
+        <h4>Explication</h4>
 
-                <p>Le retrait du client n°2 est invalide car 55DT n'est pas un montant multiple de 10 DT.</p>
-                <p>Le retrait du client n°3, 260 DT, dépasse le montant maximal autorisé pour chaque transaction,
-                    <code>mma = 250DT</code>.</p>
-                <p>Le retrait du client n°6, 150 DT, dépasse le montant restant, <code>mr = 140 DT</code>, après la
-                    5<sup>ème</sup> transaction.</p>
-                <p>Le retrait du client n°6, 100 DT, dépasse le montant restant, <code>mr = 60 DT</code>, après la
-                    7<sup>ème</sup> transaction.</p>
-            </section>
+        <p>Le retrait du client n°2 est invalide car 55DT n'est pas un montant multiple de 10 DT.</p>
+        <p>Le retrait du client n°3, 260 DT, dépasse le montant maximal autorisé pour chaque transaction,
+          <code>mma = 250DT</code>.
+        </p>
+        <p>Le retrait du client n°6, 150 DT, dépasse le montant restant, <code>mr = 140 DT</code>, après la
+          5<sup>ème</sup> transaction.</p>
+        <p>Le retrait du client n°6, 100 DT, dépasse le montant restant, <code>mr = 60 DT</code>, après la
+          7<sup>ème</sup> transaction.</p>
+      </section>
 
-            <section>
-                <h3>Algorithme</h3>
+      <section>
+        <h3>Algorithme</h3>
 
-                <pre><code class="language-algorithm">Algorithme DAB
+        <pre><code class="language-algorithm">Algorithme DAB
 Début
   // 1. Saisie du montant initial
   Répéter
-    Ecrire("Montant initial distributeur (mid &ge; 10) ? ")
+    Ecrire("Montant initial distributeur (mid &ge; 0) ? ")
     Lire(mid)
   Jusqu'à (mid &ge; 0)
   // 2. Saisie du montant maximal autorisé
@@ -124,53 +125,390 @@ Début
   .........................................................
 Fin</code></pre>
 
-<table class="w-100">
-    <tr>
-        <td class="w-50">
-            <table class="table border-dark table-bordered table-sm">
+        <table class="w-100">
+          <tr>
+            <td class="w-50">
+              <table class="table border-dark table-bordered table-sm">
                 <tr>
-                    <th>TDNT</th>
+                  <th>TDNT</th>
                 </tr>
                 <tr>
-                    <td>&nbsp;</td>
+                  <td>&nbsp;</td>
                 </tr>
-            </table>
-        </td>
-        <td>
-            <table class="table border-dark table-bordered table-sm">
+              </table>
+            </td>
+            <td>
+              <table class="table border-dark table-bordered table-sm">
                 <tr>
-                    <th colspan="2">TDO</th>
-                </tr>
-                <tr>
-                    <th>Objet</th>
-                    <th>Type</th>
+                  <th colspan="2">TDO</th>
                 </tr>
                 <tr>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
+                  <th>Objet</th>
+                  <th>Type</th>
                 </tr>
-            </table>
-        </td>
-    </tr>
-</table>
-            </section>
-        </article>
-    </main>
+                <tr>
+                  <th>&nbsp;</th>
+                  <th>&nbsp;</th>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </section>
 
-    <footer class="d-print-none bg-dark text-white p-2">
-        <div class="text-center">Page créée avec ♥ par Mohamed Anis MANI</div>
-        <div class="text-center small">Année scolaire : 2020/2021</div>
-    </footer>
+      <section>
+        <h3>Correction</h3>
 
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/highlight.pack.js"></script>
-    <script src="assets/js/hljs.algorithm.js"></script>
-    <script src="assets/js/vue.min.js"></script>
-    <script src="assets/js/pages.js"></script>
-    <script>
-        hljs.initHighlightingOnLoad();
-    </script>
+        <h4>Algorithme</h4>
+        <pre><code class="language-algorithm">Algorithme DAB
+Début
+  // 1. Saisie du montant initial
+  Répéter
+    Ecrire("Montant initial distributeur (mid &ge; 0) ? ")
+    Lire(mid)
+  Jusqu'à (mid &ge; 0)
+  // 2. Saisie du montant maximal autorisé
+  Répéter
+    Ecrire("Montant maximal autorisé (mma &ge; 10) ? ")
+    Lire(mma)
+  Jusqu'à (mma &ge; 10)
+  // 3. Saisie du nombre de clients
+  Répéter
+    Ecrire("Nombre de clients (1 &le; n &le; 15) ? ")
+    Lire(n)
+  Jusqu'à (1 &le; n &le; 15)
+  // 4. Saisie des montants à retirer
+  Pour i de 0 à (n-1) Faire
+    Répéter
+        Ecrire("Montant retrait client", i + 1,"? ")
+        Lire(m[i])
+    Jusqu'à (m[i] &ge; 0)
+  Fin Pour
+  // 5. Trouver les transactions invalides
+  mr &larr;  mid
+  Pour i de 0 à (n-1) Faire
+    Si (m[i] mod 10 &ne; 0) ou (m[i] > mma) ou (m[i] > mr) Alors
+      Ecrire("-", i+1, "=>", m[i], "DT")
+    Sinon
+      mr &larr; mr - m[i]
+    Fin Si
+  Fin Pour
+  // 6. Affichage du montant restant
+  Ecrire("Le montant restant =", mr)
+Fin</code></pre>
+
+        <table class="w-100">
+          <tr>
+            <td class="w-50">
+              <table class="table border-dark table-bordered table-sm">
+                <tr>
+                  <th>TDNT</th>
+                </tr>
+                <tr>
+                  <td>tab = tableau de 15 entier</td>
+                </tr>
+              </table>
+            </td>
+            <td>
+              <table class="table border-dark table-bordered table-sm">
+                <tr>
+                  <th colspan="2">TDO</th>
+                </tr>
+                <tr>
+                  <th class="w-50">Objet</th>
+                  <th>Type</th>
+                </tr>
+                <tr>
+                  <th>mid, mma, n , mr, i</th>
+                  <th>entier</th>
+                </tr>
+                <tr>
+                  <th>m</th>
+                  <th>tabe</th>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </section>
+    </article>
+
+    <article>
+      <h2>Bibliothèque Municipale</h2>
+
+      <section>
+        <h3>Enoncé</h3>
+
+        <p>Le responsable de la Bibliothèque municipale note les emprunts des livres dans un registre prévu à
+          cet usage. Suite à une maladresse, un verre de café a été renversé sur ce document. Hélas, la liste
+          des emprunts n'est plus lisible. Par chance, tous les livres empruntés appartiennent à une même
+          rangée.</p>
+
+        <p>Sachant que les livres d'une rangée possèdent des numéros pairs, ordonnés et successifs, exemple:
+          1000, 1002, 1004, 1006, etc. Qu'une rangée peut contenir <code>nl</code> livres. Et, qu'il existe
+          actuellement <code>nd</code> livres non empruntés.</p>
+
+        <p>On désire écrire un algorithme, puis un programme qui :</p>
+        <ul>
+          <li>Saisit le nombre total de livres <code>nl</code> dans une rangée,
+            <code>10 &le; nl &le; 60</code>.
+          </li>
+          <li>Saisit le nombre de livres non empruntés <code>nd</code>, <code>0 &le; nd &le; nl</code></li>
+          <li>Remplit un tableau <code>tnl</code> par les numéros de livres non empruntés, qui se trouvent
+            toujours dans la rangée. Les numéros de livres à insérer doivent être pairs, sans répétition et
+            dans l'intervalle [1000, 998 + nl *2].</li>
+          <li>Détermine et affiche les numéros de livres empruntés.</li>
+        </ul>
+
+        <h4>Exemple</h4>
+
+        <pre><code class="hljs nohighlight">Nombre total de livres dans une rangée (10 &le; nl &le; 60) ? 10
+Nombre de livres non empruntés nd (0 &le; nd &le; 10) ? 5
+Numéro livre 1 ? 1000
+Numéro livre 2 ? 1001
+Le numéro de livre 1001 n'est pas pair.
+Numéro livre 2 ? 1002
+Numéro livre 3 ? 1000
+Le livre numéro 1000 est déjà inséré.
+Numéro livre 3 ? 990
+Le numéro de livre 990 n'est pas dans l'intervalle [1000, 1018]
+Numéro livre 3 ? 1020
+Le numéro de livre 1020 n'est pas dans l'intervalle [1000, 1018]
+Numéro livre 3 ? 1018
+Numéro livre 4 ? 1004
+Numéro livre 5 ? 1008
+Le livre n°1006 a été emprunté.
+Le livre n°1010 a été emprunté.
+Le livre n°1012 a été emprunté.
+Le livre n°1014 a été emprunté.
+Le livre n°1016 a été emprunté.</code></pre>
+
+        <h4>Explication</h4>
+
+        <p>La rangée comporte, initialement, les livres numéros : 1000, 1002, 1004, 1006, 1008, 1010, 1012,
+          1014, 1016, 1018.</p>
+        <p>Les livres encore disponibles dans la rangée sont : 1000, 1002, 1004, 1008, 1018.
+        </p>
+        <p>D'où les livres empruntés seront : 1006, 1010, 1012, 1014, 1016.</p>
+      </section>
+
+      <section>
+        <h3>Algorithme</h3>
+
+        <pre><code class="language-algorithm">Algorithme BIBLIO
+Début
+  // 1. Saisie du nombre total delivres (nl) dans une rangée
+  Répéter
+    Ecrire("Nombre total de livres dans une rangée (10 &le; nl &le; 60) ? ")
+    Lire(nl)
+  Jusqu'à (10 &le; nl &le; 60)
+  // 2. Saisie du nombre de livres non empruntés (nd)
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  // 3. Remplissage du tableau par les numéros des livres non empruntés
+  //    Les numéros doivent être pairs, compris entre [1000, 998 + 2 * nl] et non répétés
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  // 4. Affichage des numéros des livres empruntés
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+Fin</code></pre>
+
+        <table class="w-100">
+          <tr>
+            <td class="w-50">
+              <table class="table border-dark table-bordered table-sm">
+                <tr>
+                  <th>TDNT</th>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+            <td>
+              <table class="table border-dark table-bordered table-sm">
+                <tr>
+                  <th colspan="2">TDO</th>
+                </tr>
+                <tr>
+                  <th>Objet</th>
+                  <th>Type</th>
+                </tr>
+                <tr>
+                  <th>&nbsp;</th>
+                  <th>&nbsp;</th>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </section>
+
+      <section>
+        <h3>Correction</h3>
+
+        <h4>Algorithme</h4>
+
+        <pre><code class="language-algorithm">Algorithme BIBLIO
+Début
+  // 1. Saisie du nombre total delivres (nl) dans une rangée
+  Répéter
+    Ecrire("Nombre total de livres dans une rangée (10 &le; nl &le; 60) ? ")
+    Lire(nl)
+  Jusqu'à (10 &le; nl &le; 60)
+  // 2. Saisie du nombre de livres non empruntés (nd)
+  Répéter
+    Ecrire("Nombre de livres non empruntés nd (0 &le; nd &le; ", nl," ? ")
+    Lire(nd)
+  Jusqu'à (0 &le; nd &le; nl)
+  // 3. Remplissage du tableau par les numéros des livres non empruntés
+  //    Les numéros doivent être pairs, compris entre [1000, 998 + 2 * nl] et non répétés
+  Pour i de 0 à (n-1) Faire
+    Répéter
+      Ecrire("Numéro livre", i+1, " ? ")
+      Lire(liv)
+      Si liv mod 2 = 1 Alors
+        Ecrire("Le numéro de livre", liv, "n'est pas pair")
+      Sinon Si liv &in; tnl Alors
+        Ecrire("Le numéro de livre", liv, "est déjà inséré")
+      Sinon Si (liv &lt; 1000) ou (liv &gt; 998+2*nl) Alors
+        Ecrire("Le numéro de livre", liv, "n'est pas dans l'intervalle")
+      Fin Si  
+    Jusqu'à (liv mod 2 = 0) et (liv &notin; tnl) et (1000 &le; liv &le; 998+2*nl)
+    tnl[i] &larr; liv
+  Fin Pour
+  // 4. Affichage des numéros des livres empruntés
+  Pour i de 1000 à 998+nl*2 (Pas = 2) Faire
+    Si i &notin; tnl Alors
+      Ecrire("Le livre n°", i, "a été emprunté.")
+    Fin Si
+  Fin Pour
+Fin</code></pre>
+
+        <table class="w-100">
+          <tr>
+            <td class="w-50">
+              <table class="table border-dark table-bordered table-sm">
+                <tr>
+                  <th>TDNT</th>
+                </tr>
+                <tr>
+                  <td>tab = tableau de 60 entier</td>
+                </tr>
+              </table>
+            </td>
+            <td>
+              <table class="table border-dark table-bordered table-sm">
+                <tr>
+                  <th colspan="2">TDO</th>
+                </tr>
+                <tr>
+                  <th>Objet</th>
+                  <th>Type</th>
+                </tr>
+                <tr>
+                  <th>nl, nd, i, liv</th>
+                  <th>entier</th>
+                </tr>
+                <tr>
+                  <th>tnl</th>
+                  <th>tab</th>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </section>
+    </article>
+
+    <article>
+      <h2>Compte Bancaire</h2>
+
+      <section>
+        <h3>Enoncé</h3>
+
+        <p>Le compte bancaire d'une entreprise commerciale contient un montant d'argent <code>m</code>,
+          <code>m &ge; 0</code>. Et, son titulaire dispose d'un couvert -montant qu'on peut retirer d'un compte sans
+          provision- noté <code>mc</code>, <code>mc &gt; 0</code>. Chaque jour ce compte est le sujet de <code>nt</code>
+          transactions, <code>. &le; nt &le; 50</code>.
+        </p>
+
+        <p>Une transaction peut-être soit :</p>
+        <ul>
+          <li>Un cédit, montant &gt; 0, on verse un montant dans le compte</li>
+          <li>Un débit, montant &lt; 0, on retire un montant du compte</li>
+        </ul>
+
+        <p>On suppose que les transactions sont ordonnés dans un tableau <code>trans</code> selon leur ordre d'arrivée.
+          On désire écrire un algorithme, puis un programme qui :</p>
+
+        <ul>
+          <li>Saisit le solde du compte <code>m</code>, <code>m &ge; 0</code></li>
+          <li>Saisit le montant du couvert <code>mc</code>, <code>mc &gt; 0</code></li>
+          <li>Saisit le nombre de transactions <code>nt</code>, <code>0 &le; nt &le; 50</code>
+          <li>
+          <li>Remplit un tableau <code>trans</code> par les <code>nl</code> transactions effectuées sur ce compte.</li>
+          <li>Calcule et affiche les transactions impayées, le solde actuel du compte, ainsi que les montants payés et
+            les montants impayés.</li>
+        </ul>
+
+        <h4>Exemple</h4>
+
+        <pre><code class="hljs nohighlight">solde du compte (m &ge; 0) ? 1000
+montant du couvert (mc &gt; 0) ? 2500
+Nbre de transactions (0 &le; nt &le; 50) ? 5
+transaction [1] ? -2450
+transaction [2] ? -800
+transaction [3] ? -700
+transaction [4] ? 4000
+transaction [5] ? 300
+transaction impayée 3 : 700 DT 
+solde du compte : 2050
+montant payé : 3250
+montant impayé : 700</code></pre>
+
+        <h4>Explication</h4>
+
+        <p>Le compte comporte 1000DT. On retire 2450DT, le solde devient -1450DT. On retire, encore, 800DT, il devient
+          égal à -2250DT.</p>
+        <p>On ne peut pas retirer 700DT, sinon on dépasse le montant de couvert fixé à 2500DT, d'où cette transaction
+          n°3 revient impayée.</p>
+        <p>On verse dans le compte 4000DT et 300DT, le solde devient, alors, 2050DT.</p>
+      </section>
+    </article>
+  </main>
+
+  <footer class="d-print-none bg-dark text-white p-2">
+    <div class="text-center">Page créée avec ♥ par Mohamed Anis MANI</div>
+    <div class="text-center small">Année scolaire : 2020/2021</div>
+  </footer>
+
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/highlight.pack.js"></script>
+  <script src="assets/js/hljs.algorithm.js"></script>
+  <script src="assets/js/vue.min.js"></script>
+  <script src="assets/js/pages.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script>
 </body>
 
 </html>
