@@ -492,6 +492,163 @@ montant impayé : 700</code></pre>
           n°3 revient impayée.</p>
         <p>On verse dans le compte 4000DT et 300DT, le solde devient, alors, 2050DT.</p>
       </section>
+
+      <section>
+        <h3>Algorithme</h3>
+
+        <pre><code class="language-algorithm">Algorithme Compte
+Début
+  // 1. Saisie du solde du compte
+  Répéter
+    Ecrire("solde du compte (m &ge; 0) ? ")
+    Lire(m)
+  Jusqu'à (m &ge; 0)
+  // 2. Saisie du montant de couvert
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  // 3. Saisie du nombre de transactions
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  // 4. Remplissage du tableau trans par les transactions, montant &ne; 0
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  // 5. Calcul et affichage des transactions impayées, du solde du compte,
+  // les montants payés et les montants impayés
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+  .........................................................
+Fin</code></pre>
+
+        <table class="w-100">
+          <tr>
+            <td class="w-50">
+              <table class="table border-dark table-bordered table-sm">
+                <tr>
+                  <th>TDNT</th>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+            <td>
+              <table class="table border-dark table-bordered table-sm">
+                <tr>
+                  <th colspan="2">TDO</th>
+                </tr>
+                <tr>
+                  <th>Objet</th>
+                  <th>Type</th>
+                </tr>
+                <tr>
+                  <th>&nbsp;</th>
+                  <th>&nbsp;</th>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </section>
+
+      <section>
+        <h3>Correction</h3>
+
+        <h4>Algorithme</h4>
+
+        <pre><code class="language-algorithm">Algorithme Compte
+Début
+  // 1. Saisie du solde du compte
+  Répéter
+    Ecrire("solde du compte (m &ge; 0) ? ")
+    Lire(m)
+  Jusqu'à (m &ge; 0)
+  // 2. Saisie du montant de couvert
+  Répéter
+    Ecrire("montant du couvert (mc &ge; 0) ? ")
+    Lire(mc)
+  Jusqu'à (mc &ge; 0)
+  // 3. Saisie du nombre de transactions
+  Répéter
+    Ecrire("nbre de transactions (0 &le; nt &le; 50) ? ")
+    Lire(nt)
+  Jusqu'à (0 &le; nt &le; 50)
+  // 4. Remplissage du tableau trans par les transactions, montant &ne; 0
+  Pour i de 0 à nt-1 faire
+    Répéter
+      Ecrire("transaction [", i+1, "] ? ")
+      Lire(trans[i])
+    Jusqu'à (trans[i] &ne; 0)
+  Fin pour
+  // 5. Calcul et affichage des transactions impayées, du solde du compte,
+  // les montants payés et les montants impayés
+  mp &larr; 0
+  mi &larr; 0
+  Pour i de 0 à nt-1 Faire
+    Si trans[i] &lt; 0 Alors
+      Si (m+trans[i] &gt; -mc) Alors
+        m &larr; m + trans[i]
+        mp &larr; mp - trans[i]
+      Sinon
+        mi &larr; mi - trans[i]
+        Ecrire("Transaction impayée", i+1, ":", -trans[i], "DT")
+      Fin Si
+    Sinon
+      m &larr; m + trans[i]
+    Fin Si
+  Fin Pour
+  Ecrire("Le solde du compte :", m)
+  Ecrire("montant payé :", mp)
+  Ecrire("montant impayé :", mi)
+Fin</code></pre>
+
+        <table class="w-100">
+          <tr>
+            <td class="w-50">
+              <table class="table border-dark table-bordered table-sm">
+                <tr>
+                  <th>TDNT</th>
+                </tr>
+                <tr>
+                  <td>tab = tableau de 50 entier</td>
+                </tr>
+              </table>
+            </td>
+            <td>
+              <table class="table border-dark table-bordered table-sm">
+                <tr>
+                  <th colspan="2">TDO</th>
+                </tr>
+                <tr>
+                  <th>Objet</th>
+                  <th>Type</th>
+                </tr>
+                <tr>
+                  <th>m, mc, nt, i, mp, mi</th>
+                  <th>entier</th>
+                </tr>
+                <tr>
+                  <th>trans</th>
+                  <th>tab</th>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </section>
     </article>
   </main>
 
