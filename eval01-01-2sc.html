@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evaluation 2SC</title>
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/default.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    caption {
+      caption-side: top;
+      text-align: center;
+    }
+
+    .dotted {
+      border-bottom: #000 dotted 2px;
+      padding-top: 8pt;
+    }
+  </style>
+</head>
+
+<body>
+  <aside>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#aside_navbar"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span> Menu
+      </button>
+      <div class="collapse navbar-collapse" id="aside_navbar"></div>
+    </nav>
+  </aside>
+
+  <main class="container my-3">
+    <h1>Evaluation</h1>
+
+    <article>
+      <h2>Exercice</h2>
+
+      <section>
+        <h3>Jeu Vache - Taureau</h3>
+
+        <p>On donne l'algorithme complet du jeu Vache-Taureau déjà traité en classe.</p>
+
+        <div class="row">
+          <div class="col-sm">
+            <pre><code class="algorithm">Algorithme Vache_taureau
+Début
+  // L'ordinateur choisit un nombre de trois chiffres distincts
+  secret &larr; ""
+  Pour i de 1 à 3 Faire
+    Répéter
+      ch &larr; convch(aléa(0, 9))
+    Jusqu'à ch &notin; secret
+    secret &larr; secret + ch
+  Fin Pour 
+  
+  Répéter
+    
+    // L'utilisateur propose un nombre de trois chiffres
+    Répéter
+      Ecrire("Proposer un nombre de 3 chiffres distincts ? ")
+      Lire(prop)
+    Jusqu'à (long(prop) = 3) et (estnum(pop))
+
+    // Calculer le nombre de vaches et de taureaux
+    nv &larr; 0
+    nt &larr; 0
+    Pour i de 0 à Long(secret) Faire
+      Si secret[i] = prop[i] Alors
+        nt &larr; nt + 1
+      Sinon Si prop[i] &in; secret Alors
+        nv &larr; nv + 1
+      Fin Si
+    Fin Pour
+
+    // Afficher le décompte
+    Ecrire(prop, "-", nt, "T,", nv, "V")
+  
+  // Gagné lorsqu'on a 3 Taureaux
+  Jusqu'à (nt = 3)
+
+  Ecrire("Bravo, vous avez gagné!")
+Fin</code></pre>
+<table class="table-bordered table-sm border-dark table">
+  <thead>
+    <tr>
+      <th colspan="2">TDO</th>
+    </tr>
+    <tr>
+      <th width="50%">Objet</th>
+      <th>Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>secret, ch, prop</td>
+      <td>chaîne</td>
+    </tr>
+    <tr>
+      <td>nv, nt, i</td>
+      <td>entier</td>
+    </tr>
+  </tbody>
+</table>
+          </div>
+          <div class="col-sm">
+            <pre><code class="algorithm">Algorithme Vache_taureau_v2
+Début
+  // L'utilisateur choisit le nombre de chiffres (nc)  <p class="dotted"></p><p class="dotted"></p><p class="dotted"></p><p class="dotted"></p>  // L'ordinateur choisit un nbre de (nc) chiffres distincts  <p class="dotted"></p><p class="dotted"></p><p class="dotted"></p><p class="dotted"></p><p class="dotted"></p><p class="dotted"></p><p class="dotted"></p><p class="dotted"></p>
+  essais &larr; 0
+  Répéter    <p class="dotted"></p>    // L'utilisateur propose un nombre de (nc) chiffres    <p class="dotted"></p><p class="dotted"></p><p class="dotted"></p><p class="dotted"></p>
+    // Calculer le nombre de vaches et de taureaux
+    nv &larr; 0 ; nt &larr; 0
+    Pour i de 0 à Long(secret) Faire
+      Si secret[i] = prop[i] Alors nt &larr; nt + 1
+      Sinon Si prop[i] &in; secret Alors nv &larr; nv + 1
+      Fin Si
+    Fin Pour
+    // Afficher le décompte
+    Ecrire(prop, "-", nt, "T,", nv, "V")
+  // Gagné lorsqu'on a (nc) Taureaux
+  Jusqu'à (nt = nc) ou (<span style="display: inline-block; width: 200px; border-bottom: #000 dotted 2px;"></span>)
+  // Afficher si le joueur gagne ou bien le nombre secret  <p class="dotted"></p><p class="dotted"></p><p class="dotted"></p><p class="dotted"></p><p class="dotted"></p>
+Fin</code></pre>
+          </div>
+        </div>
+
+        <p>Nous voulons améliorer cet algorithme :</p>
+        <ul>
+          <li>Donner à l'utilisateur la possibilité de choisir le nombre de chiffres <code>nc</code> entre [3, 8].</li>
+          <li>Modifier le reste du programme pour prendre en compte cette modification.</li>
+          <li>Modifier le programme pour limiter le nombre d'essais à 10 au maximum.</li>
+        </ul>
+      </section>
+    </article>
+  </main>
+
+  <footer class="d-print-none bg-dark text-white p-2">
+    <div class="text-center">Page créée avec ♥ par Mohamed Anis MANI</div>
+    <div class="text-center small">Année scolaire : 2020/2021</div>
+  </footer>
+
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/highlight.pack.js"></script>
+  <script src="assets/js/hljs.algorithm.js"></script>
+  <script src="assets/js/vue.min.js"></script>
+  <script src="assets/apps/tombola.js"></script>
+  <script src="assets/js/pages.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script>
+</body>
+
+</html>
