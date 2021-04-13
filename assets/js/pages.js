@@ -1,15 +1,24 @@
 $(() => {
+  const curPos = new URL(location.href);
+  let sectionNum = -1;
+  let articleNum = -1;
+  if (curPos.hash.startsWith("#section")) {
+    const hs = curPos.hash.split('-');
+    articleNum = +hs[1] - 1;
+    sectionNum = +hs[2] - 1;
+  }
+
   const aside = $('aside #aside_navbar');
   const articles = $('main article');
   const articles_count = articles.length;
   const STORAGE_KEY = location.pathname + '#art_obj';
-  const art_obj = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+  const art_obj = (sectionNum != -1 && articleNum != -1) ? {
     article: null,
-    article_index: 0,
+    article_index: articleNum,
     sections: null,
     section: null,
-    section_index: 0
-  };
+    section_index: sectionNum
+  } : JSON.parse(localStorage.getItem(STORAGE_KEY));
 
   const link_list = $('<ul>')
     .addClass('navbar-nav mr-auto')
