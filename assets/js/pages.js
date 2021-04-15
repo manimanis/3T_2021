@@ -12,13 +12,20 @@ $(() => {
   const articles = $('main article');
   const articles_count = articles.length;
   const STORAGE_KEY = location.pathname + '#art_obj';
+  const localStorageData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+    article: null,
+    article_index: 0,
+    sections: null,
+    section: null,
+    section_index: 0
+  };
   const art_obj = (sectionNum != -1 && articleNum != -1) ? {
     article: null,
     article_index: articleNum,
     sections: null,
     section: null,
     section_index: sectionNum
-  } : JSON.parse(localStorage.getItem(STORAGE_KEY));
+  } : localStorageData;
 
   const link_list = $('<ul>')
     .addClass('navbar-nav mr-auto')
