@@ -1232,6 +1232,18 @@ for i in range(5):
         <p>Par exemple, si l’utilisateur entre le nombre 17, le programme affichera les nombres de
           18 à 27.</p>
 
+        <h5>Solution</h5>
+
+        <pre><code class="language-algorithm">Algorithme Ex1
+Début
+  Ecrire("Donner un nombre ? ")
+  Lire(n)
+
+  Pour i de n à n + 9 Faire
+    Ecrire(i)
+  Fin Pour
+Fin</code></pre>
+
         <h4>Exercice 2 </h4>
         <p>Ecrire un algorithme qui demande un nombre de départ, et qui ensuite écrit la
           table de multiplication de ce nombre, présentée comme suit (cas où l’utilisateur entre le nombre 7) :</p>
@@ -1242,32 +1254,115 @@ for i in range(5):
         <p>…</p>
         <p>7 x 10 = 70</p>
 
+        <h5>Solution</h5>
+
+        <pre><code class="language-algorithm">Algorithme Ex2
+Début
+  Répéter
+    Ecrire("Donner un nombre 1 &le; n &le; 10 ? ")
+    Lire(n)
+  Jusqu'à 1 &le; n &le; 10
+
+  Ecrire("Table de ", n, " :")
+  Pour i de 1 à 10 Faire
+    Ecrire(n, "&times;", i, "=", n * i)
+  Fin Pour
+Fin</code></pre>
+
         <h4>Exercice 3 </h4>
         <p>Ecrire un algorithme qui demande un nombre, et qui calcule la somme des
           entiers jusqu’à ce nombre.</p>
         <p>Par exemple, si l’on entre 5, le programme doit calculer : 1 + 2 + 3 + 4 + 5 =
           15</p>
 
-        <h4>Exercice 4 </h4>
+        <h5>Solution</h5>
+
+        <pre><code class="language-algorithm">Algorithme Ex3
+Début
+  Répéter
+    Ecrire("Donner un nombre  n &gt; 0 ? ")
+    Lire(n)
+  Jusqu'à n &gt; 0
+
+  s &larr; 0
+  Pour i de 1 à n Faire
+    s &larr; s + i
+  Fin Pour
+
+  Ecrire("Somme = ", s)
+Fin</code></pre>
+
+        <h4>Exercice 4</h4>
         <p>Ecrire un algorithme qui demande un nombre, et qui calcule sa factorielle.</p>
         <p>NB : la factorielle de 8, notée 8 != 1 x 2 x 3 x 4 x 5 x 6 x 7 x 8</p>
+
+        <h5>Solution</h5>
+
+        <pre><code class="language-algorithm">Algorithme Ex4
+Début
+  Répéter
+    Ecrire("Donner un nombre  n &gt; 0 ? ")
+    Lire(n)
+  Jusqu'à n &gt; 0
+
+  f &larr; 1
+  Pour i de 2 à n Faire
+    f &larr; f * i
+  Fin Pour
+
+  Ecrire(n, "! = ", f)
+Fin</code></pre>
 
         <h4>Exercice 5 </h4>
         <p>Ecrire un algorithme qui demande successivement 20 nombres à l’utilisateur, et
           qui détermine le plus grand nombre :</p>
         <p>Entrez le nombre numéro 1 : 12</p>
-        <p>Entrez
-          le nombre numéro 2 : 14</p>
+        <p>Entrez le nombre numéro 2 : 14</p>
         <p>etc.</p>
         <p>Entrez le nombre numéro 20 : 6</p>
         <p>Le plus grand de ces nombres est : 14</p>
         <p>Modifiez ensuite l’algorithme pour qu'il affiche la position du maximum :</p>
         <p>C’était le nombre numéro 2</p>
 
+        <h5>Solution</h5>
+
+        <pre><code class="language-algorithm">Algorithme Ex5
+Début
+  Pour i de 1 à 20 Faire
+    Ecrire("Entrer le nombre numéro ", i, " : ")
+    Lire(v)
+
+    Si i = 1 ou v > max alors
+      max &larr; v
+    Fin Si
+  Fin Pour
+
+  Ecrire("Le plus grand de ces nombes est : ", max)
+Fin</code></pre>
+
         <h4>Exercice 6 </h4>
         <p>Réécrire l’algorithme précédent, mais cette fois-ci on ne connaît pas d’avance combien l’utilisateur
           souhaite saisir de nombres.</p>
         <p>La saisie des nombres s’arrête lorsque l’utilisateur entre un zéro.</p>
+
+
+        <h5>Solution</h5>
+
+        <pre><code class="language-algorithm">Algorithme Ex6
+Début
+  i &larr; 1
+  Répéter
+    Ecrire("Entrer le nombre numéro ", i, " : ")
+    Lire(v)
+
+    Si (i = 1) ou (v &ne; 0 et v > max) alors
+      max &larr; v
+    Fin Si
+    i &larr; i + 1
+  Jusqu'à v = 0
+
+  Ecrire("Le plus grand de ces nombes est : ", max)
+Fin</code></pre>
 
         <h4>Exercice 7</h4>
         <p>Lire la suite des prix (en DT entiers et terminée par zéro) des achats d’un client.</p>
@@ -1275,16 +1370,79 @@ for i in range(5):
         <p>En affichant par exemple «&nbsp;1 billet de 10 DT&nbsp;», «&nbsp;1 pièces de 5 DT&nbsp;» et «&nbsp;3 pièces
           de 100 millimes&nbsp;».</p>
 
+        <h5>Solution</h5>
+
+        <pre><code class="language-algorithm">Algorithme Ex7
+Début
+  total &larr; 0
+  n &larr; 0
+  Répéter
+    n &larr; n + 1
+    Répéter
+      Ecrire("Entrer le prix de l'article n°", n, " : ")
+      Lire(prix)
+    Jusqu'à (prix &ge; 0)
+
+    total &larr; total + prix
+  Jusqu'à v = 0
+
+  Ecrire("Nombre d'articles : ", n)
+  Ecrire("Total à Payer : ", total)
+
+  Répéter
+    Ecrire("Entrer le montant payé &ge; ", total," ? ")
+    Lire(mp)
+  Jusqu'à mp &ge; total
+
+  reste &larr; mp - total
+  Ecrire("Reste = ", reste)
+Fin</code></pre>
+
         <h4>Exercice 8 </h4>
         <p>Ecrire un algorithme qui demande un nombre compris entre 10 et 20, jusqu’à ce que la réponse convienne.
           En cas de réponse supérieure à 20, on fera apparaître un message : « Plus petit ! », et inversement, «
           Plus grand ! » si le nombre est inférieur à 10.</p>
+
+        <h5>Solution</h5>
+
+        <pre><code class="language-algorithm">Algorithme Ex8
+Début
+  Répéter
+    Ecrire("Entrer un nombre 10 &le; n &le; 20 : ")
+    Lire(n)
+
+    Si n &gt; 20 alors 
+      Ecrire("Plus petit !")
+    sinon si n &lt; 10 Alors
+      Ecrire("Plus grand !")
+    Fin si
+  Jusqu'à (10 &le; n &le; 20)
+
+  Ecrire("n = ", n)
+Fin</code></pre>
 
         <h4>Exercice 9</h4>
         <p>Ecrire un algorithme qui remplisse un tableau de 7 valeurs numériques par des zéros.</p>
 
         <h4>Exercice 10</h4>
         <p>Ecrire un algorithme qui remplisse un tableau par les lettres alphabétiques.</p>
+
+        <h5>Solution</h5>
+
+        <pre><code class="language-algorithm">Algorithme Ex10
+Début
+  Répéter
+    Ecrire("Entrer le nombre d'éléments (0 &lt; n &le; 50) : ")
+    Lire(n)
+  Jusqu'à (1 &le; n &le; 50)
+
+  Pour i de 0 à n-1 Faire
+    Répéter
+      Ecrire("Case n°", i, " : ")
+      Lire(t[i])
+    Jusqu'à ("a" &le; t[i] &le; "z") ou ("A" &le; t[i] &le; "Z")
+  Fin Pour
+Fin</code></pre>
 
         <h4>Exercice 11</h4>
         <p>Ecrire un algorithme qui déclare un tableau de 9 notes, dont on fait ensuite saisir les valeurs par
@@ -1498,22 +1656,22 @@ Fin</code></pre>
               <td width="15%">2</td>
             </tr>
           </tbody>
-          </table>
+        </table>
 
-          <h4>Exercice 22</h4>
-          <p>Ecrivez un algorithme qui trie un tableau dans l’ordre décroissant.</p>
-          <p>Vous écrirez bien entendu deux versions de cet algorithme, l’une employant le tri par sélection, l’autre
-            le tri à bulles.</p>
+        <h4>Exercice 22</h4>
+        <p>Ecrivez un algorithme qui trie un tableau dans l’ordre décroissant.</p>
+        <p>Vous écrirez bien entendu deux versions de cet algorithme, l’une employant le tri par sélection, l’autre
+          le tri à bulles.</p>
 
-          <h4>Exercice 23</h4>
-          <p>Ecrivez l’algorithme qui recherche un mot saisi au clavier dans un dictionnaire. Le dictionnaire est
-            supposé être codé dans un tableau préalablement rempli et trié.</p>
+        <h4>Exercice 23</h4>
+        <p>Ecrivez l’algorithme qui recherche un mot saisi au clavier dans un dictionnaire. Le dictionnaire est
+          supposé être codé dans un tableau préalablement rempli et trié.</p>
 
-          <h4>Exercice 24</h4>
-          <p>Écrivez un algorithme qui permette de saisir les éléments d’un tableau, et qui vérifie s’ils sont tous
-            différents.</p>
-          <p>L’algorithme affichera simplement «&nbsp;Il y a un ou plusieurs doublons&nbsp;» ou «&nbsp;Il
-            n’y a pas de doublons&nbsp;» selon les cas.</p>
+        <h4>Exercice 24</h4>
+        <p>Écrivez un algorithme qui permette de saisir les éléments d’un tableau, et qui vérifie s’ils sont tous
+          différents.</p>
+        <p>L’algorithme affichera simplement «&nbsp;Il y a un ou plusieurs doublons&nbsp;» ou «&nbsp;Il
+          n’y a pas de doublons&nbsp;» selon les cas.</p>
       </section>
     </article>
   </main>
